@@ -1,0 +1,6 @@
+{
+  "name": "MoneyCalc Hub",
+  "description": "Simple Calculators. Clear Answers. Fast, accurate, and free online calculators for money, business, salary, loans, interest, and investments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

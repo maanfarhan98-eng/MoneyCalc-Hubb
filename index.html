@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>MoneyCalc Hub — Free Money & Financial Calculators</title>
+    <meta name="description" content="Simple Calculators. Clear Answers. Calculate percentages, discounts, profits, salaries, loans, interest, investments, and savings quickly and accurately." />
+    <meta property="og:title" content="MoneyCalc Hub — Free Money & Financial Calculators" />
+    <meta property="og:description" content="Calculate percentages, discounts, profits, salaries, loans, interest, investments, and savings quickly and accurately." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MoneyCalc Hub" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MoneyCalc Hub — Free Money & Financial Calculators" />
+    <meta name="twitter:description" content="Calculate percentages, discounts, profits, salaries, loans, interest, investments, and savings quickly and accurately." />
+    <link rel="canonical" href="https://moneycalchub.com/" />
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ========================================================
+         THIRD-PARTY SCRIPTS & VERIFICATION SLOTS
+         Add your production verification or ad scripts below:
+         1. Google Search Console: <meta name="google-site-verification" content="..." />
+         2. Google AdSense: <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXX" crossorigin="anonymous"></script>
+         3. Google Analytics (GA4): <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXX"></script>
+         4. Adsterra / Verification tags: paste your tags here
+         ======================================================== -->
+    <!-- Theme initialization script (prevents theme flash on reload) -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('moneycalc_theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500/20 selection:text-emerald-900 min-h-screen dark:bg-slate-950 dark:text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
