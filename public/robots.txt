@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://moneycalchub.com/sitemap.xml
+Sitemap: https://moneycalchub.online/sitemap.xml

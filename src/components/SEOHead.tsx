@@ -32,7 +32,8 @@ export function SEOHead({ title, description, canonicalPath, calculator, isLegal
     setMeta('property', 'og:title', title);
     setMeta('property', 'og:description', description);
     setMeta('property', 'og:type', isLegalOrHome ? 'website' : 'article');
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://moneycalchub.com';
+    // Canonical production origin
+    const origin = 'https://moneycalchub.online';
     const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
     const fullCanonicalUrl = `${origin}${cleanPath}`;
     setMeta('property', 'og:url', fullCanonicalUrl);

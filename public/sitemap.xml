@@ -2,180 +2,180 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://moneycalchub.com/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Financial Calculators -->
   <url>
-    <loc>https://moneycalchub.com/percentage-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/percentage-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/discount-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/discount-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/tip-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/tip-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/age-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/age-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/commission-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/commission-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/markup-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/markup-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/profit-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/profit-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/profit-margin-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/profit-margin-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/break-even-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/break-even-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/roi-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/roi-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/salary-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/salary-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/overtime-pay-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/overtime-pay-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/pay-raise-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/pay-raise-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/loan-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/loan-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/simple-interest-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/simple-interest-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/compound-interest-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/compound-interest-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/monthly-payment-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/monthly-payment-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/interest-rate-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/interest-rate-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/loan-payoff-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/loan-payoff-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/investment-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/investment-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/savings-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/savings-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/compound-interest-investment-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/compound-interest-investment-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/return-on-investment-calculator/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/return-on-investment-calculator/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Legal & Trust Pages -->
   <url>
-    <loc>https://moneycalchub.com/about/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/about/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/contact/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/contact/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/privacy-policy/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/privacy-policy/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/terms/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/terms/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://moneycalchub.com/disclaimer/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://moneycalchub.online/disclaimer/</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
