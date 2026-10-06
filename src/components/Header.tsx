@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, Sun, Moon, Menu, X, ChevronRight } from 'lucide-react';
 import { CATEGORIES } from '../data/calculators';
 import { CurrencySelector } from './CurrencySelector';
+import { HeaderAd } from './HeaderAd';
 
 interface HeaderProps {
   currentPath: string;
@@ -173,6 +174,9 @@ export function Header({ currentPath, onNavigate, onOpenSearch, isDarkMode, onTo
           </div>
         </div>
       )}
+
+      {/* Header Adsterra 320x50 Banner Advertisement */}
+      <HeaderAd />
     </header>
   );
 }
