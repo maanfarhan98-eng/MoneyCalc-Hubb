@@ -35,19 +35,27 @@ export function CalculatorPageTemplate({ calculator, onNavigate }: TemplateProps
       
       {/* 1. Breadcrumbs */}
       <nav aria-label="Breadcrumbs" className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-        <button
-          onClick={() => onNavigate('/')}
-          className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate('/');
+          }}
+          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
         >
           Home
-        </button>
+        </a>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-        <button
-          onClick={() => onNavigate(`/#${calculator.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`)}
-          className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+        <a
+          href={`/#${calculator.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+          onClick={(e) => {
+            e.preventDefault();
+            onNavigate(`/#${calculator.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`);
+          }}
+          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
         >
           {calculator.category}
-        </button>
+        </a>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
         <span className="text-slate-900 dark:text-white font-medium truncate" aria-current="page">
           {calculator.h1}
@@ -166,21 +174,25 @@ export function CalculatorPageTemplate({ calculator, onNavigate }: TemplateProps
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {relatedList.map((rel) => (
-              <button
+              <a
                 key={rel.id}
-                onClick={() => onNavigate(rel.path)}
-                className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-xs transition-all text-left group cursor-pointer"
+                href={rel.path}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate(rel.path);
+                }}
+                className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xs transition-all text-left group cursor-pointer"
               >
                 <div className="space-y-1 pr-3">
-                  <span className="font-semibold text-sm text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors block">
+                  <span className="font-semibold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors block">
                     {rel.h1}
                   </span>
                   <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
                     {rel.shortIntro}
                   </p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:translate-x-1 transition-all shrink-0" />
-              </button>
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all shrink-0" />
+              </a>
             ))}
           </div>
         </section>

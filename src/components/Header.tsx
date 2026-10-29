@@ -36,12 +36,27 @@ export function Header({ currentPath, onNavigate, onOpenSearch, isDarkMode, onTo
           
           {/* Brand Wordmark & Tagline */}
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => handleNavClick('/')}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('/');
+              }}
               className="flex items-center gap-2.5 text-left group cursor-pointer focus:outline-none"
             >
-              <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold font-mono text-base shadow-xs group-hover:bg-emerald-700 transition-colors">
-                M
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-xs group-hover:from-blue-600 group-hover:to-blue-800 transition-colors p-1.5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full text-white">
+                  <rect width="16" height="20" x="4" y="2" rx="2" />
+                  <line x1="8" x2="16" y1="6" y2="6" />
+                  <line x1="16" x2="16" y1="14" y2="18" />
+                  <path d="M16 10h.01" />
+                  <path d="M12 10h.01" />
+                  <path d="M8 10h.01" />
+                  <path d="M12 14h.01" />
+                  <path d="M8 14h.01" />
+                  <path d="M12 18h.01" />
+                  <path d="M8 18h.01" />
+                </svg>
               </div>
               <div>
                 <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight block leading-tight">
@@ -51,19 +66,23 @@ export function Header({ currentPath, onNavigate, onOpenSearch, isDarkMode, onTo
                   Simple Calculators · Clear Answers
                 </span>
               </div>
-            </button>
+            </a>
           </div>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
             {navLinks.map((link) => (
-              <button
+              <a
                 key={link.name}
-                onClick={() => handleNavClick(link.path)}
-                className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer py-1"
+                href={link.path}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(link.path);
+                }}
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer py-1"
               >
                 {link.name}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -151,14 +170,18 @@ export function Header({ currentPath, onNavigate, onOpenSearch, isDarkMode, onTo
             Categories
           </div>
           {navLinks.map((link) => (
-            <button
+            <a
               key={link.name}
-              onClick={() => handleNavClick(link.path)}
+              href={link.path}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick(link.path);
+              }}
               className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors text-left cursor-pointer"
             >
               <span>{link.name}</span>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </button>
+            </a>
           ))}
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
             <button

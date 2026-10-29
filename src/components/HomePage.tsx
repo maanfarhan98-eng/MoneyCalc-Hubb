@@ -114,27 +114,31 @@ export function HomePage({ onNavigate, onOpenSearch }: HomePageProps) {
           {filteredCalculators.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredCalculators.map((calc) => (
-                <button
+                <a
                   key={calc.id}
-                  onClick={() => onNavigate(calc.path)}
-                  className="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-xs transition-all text-left group cursor-pointer"
+                  href={calc.path}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate(calc.path);
+                  }}
+                  className="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xs transition-all text-left group cursor-pointer"
                 >
                   <div className="space-y-2">
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                       {calc.category}
                     </span>
-                    <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {calc.h1}
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {calc.shortIntro}
                     </p>
                   </div>
-                  <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 pt-4 mt-2">
+                  <div className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 pt-4 mt-2">
                     <span>Calculate now</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
-                </button>
+                </a>
               ))}
             </div>
           ) : (
@@ -161,32 +165,36 @@ export function HomePage({ onNavigate, onOpenSearch }: HomePageProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {popularCalculators.map((calc) => (
-              <button
+              <a
                 key={calc.id}
-                onClick={() => onNavigate(calc.path)}
-                className="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-xs transition-all text-left group cursor-pointer"
+                href={calc.path}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate(calc.path);
+                }}
+                className="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xs transition-all text-left group cursor-pointer"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                       {calc.category}
                     </span>
-                    <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-full">
                       Popular
                     </span>
                   </div>
-                  <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {calc.h1}
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                     {calc.shortIntro}
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 pt-4 mt-2">
+                <div className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 pt-4 mt-2">
                   <span>Open calculator</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
-              </button>
+              </a>
             ))}
           </div>
         </section>
@@ -221,24 +229,28 @@ export function HomePage({ onNavigate, onOpenSearch }: HomePageProps) {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {catCalculators.map((calc) => (
-                    <button
+                    <a
                       key={calc.id}
-                      onClick={() => onNavigate(calc.path)}
-                      className="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-xs transition-all text-left group cursor-pointer"
+                      href={calc.path}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigate(calc.path);
+                      }}
+                      className="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xs transition-all text-left group cursor-pointer"
                     >
                       <div className="space-y-2">
-                        <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {calc.h1}
                         </h3>
                         <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                           {calc.shortIntro}
                         </p>
                       </div>
-                      <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 pt-4 mt-2">
+                      <div className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 pt-4 mt-2">
                         <span>Use tool</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>
-                    </button>
+                    </a>
                   ))}
                 </div>
               </section>

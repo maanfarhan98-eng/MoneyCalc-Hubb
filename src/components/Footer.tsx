@@ -18,14 +18,32 @@ export function Footer({ onNavigate }: FooterProps) {
           
           {/* Brand info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold font-mono text-sm">
-                M
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('/');
+              }}
+              className="flex items-center gap-2.5 group cursor-pointer focus:outline-none"
+            >
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-b from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-xs p-1.5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full text-white">
+                  <rect width="16" height="20" x="4" y="2" rx="2" />
+                  <line x1="8" x2="16" y1="6" y2="6" />
+                  <line x1="16" x2="16" y1="14" y2="18" />
+                  <path d="M16 10h.01" />
+                  <path d="M12 10h.01" />
+                  <path d="M8 10h.01" />
+                  <path d="M12 14h.01" />
+                  <path d="M8 14h.01" />
+                  <path d="M12 18h.01" />
+                  <path d="M8 18h.01" />
+                </svg>
               </div>
-              <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight">
+              <span className="font-bold text-lg text-slate-900 dark:text-white tracking-tight group-hover:text-blue-600 transition-colors">
                 MoneyCalc Hub
               </span>
-            </div>
+            </a>
             <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed">
               Simple Calculators. Clear Answers. Free, fast, and mobile-friendly calculators designed for everyday money, business pricing, loans, interest, and investment forecasting.
             </p>
@@ -40,16 +58,23 @@ export function Footer({ onNavigate }: FooterProps) {
               Categories
             </h4>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              {CATEGORIES.map((cat) => (
-                <li key={cat.name}>
-                  <button
-                    onClick={() => onNavigate(`/#${cat.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`)}
-                    className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-left"
-                  >
-                    {cat.name}
-                  </button>
-                </li>
-              ))}
+              {CATEGORIES.map((cat) => {
+                const anchorPath = `/#${cat.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+                return (
+                  <li key={cat.name}>
+                    <a
+                      href={anchorPath}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigate(anchorPath);
+                      }}
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block"
+                    >
+                      {cat.name}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -60,44 +85,64 @@ export function Footer({ onNavigate }: FooterProps) {
             </h4>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
               <li>
-                <button
-                  onClick={() => onNavigate('/percentage-calculator/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/percentage-calculator/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/percentage-calculator/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Percentage Calculator
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/loan-calculator/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/loan-calculator/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/loan-calculator/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Loan Calculator
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/salary-calculator/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/salary-calculator/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/salary-calculator/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Salary Calculator
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/compound-interest-calculator/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/compound-interest-calculator/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/compound-interest-calculator/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Compound Interest
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/profit-margin-calculator/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/profit-margin-calculator/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/profit-margin-calculator/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Profit Margin Calculator
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -109,44 +154,64 @@ export function Footer({ onNavigate }: FooterProps) {
             </h4>
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
               <li>
-                <button
-                  onClick={() => onNavigate('/about/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/about/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/about/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   About Us
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/contact/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/contact/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/contact/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Contact & Feedback
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/privacy-policy/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/privacy-policy/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/privacy-policy/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Privacy Policy
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/terms/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/terms/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/terms/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Terms of Service
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('/disclaimer/')}
-                  className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                <a
+                  href="/disclaimer/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('/disclaimer/');
+                  }}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >
                   Financial Disclaimer
-                </button>
+                </a>
               </li>
             </ul>
           </div>
