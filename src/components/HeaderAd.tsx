@@ -44,15 +44,18 @@ export const HeaderAd = memo(function HeaderAd() {
 </head>
 <body>
   <script type="text/javascript">
-    atOptions = {
-      'key' : '094391ba6bf9dee20be90a22c610a856',
-      'format' : 'iframe',
-      'height' : 50,
-      'width' : 320,
-      'params' : {}
-    };
+    window.onerror = function() { return true; };
+    try {
+      window.atOptions = {
+        'key' : '094391ba6bf9dee20be90a22c610a856',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    } catch (e) {}
   </script>
-  <script type="text/javascript" src="https://www.highrevenueformat.com/094391ba6bf9dee20be90a22c610a856/invoke.js"></script>
+  <script type="text/javascript" onerror="void 0" src="https://www.highrevenueformat.com/094391ba6bf9dee20be90a22c610a856/invoke.js"></script>
 </body>
 </html>`;
 
