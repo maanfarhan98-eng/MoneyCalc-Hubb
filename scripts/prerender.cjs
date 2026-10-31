@@ -428,4 +428,243 @@ legalPages.forEach(page => {
   console.log(`Pre-rendered legal: /${page.slug}/index.html`);
 });
 
+// 5. Pre-render Homepage into dist/index.html
+const homeCanonicalUrl = `${BASE_URL}/`;
+let homeHtml = template;
+
+const categoriesList = [
+  {
+    name: 'Everyday Money',
+    description: 'Quick tools for daily purchases, percentage calculations, discounts, restaurant tips, and age milestones.',
+    anchor: 'everyday-money'
+  },
+  {
+    name: 'Business',
+    description: 'Essential calculators for gross profit, markups, operating margins, sales commissions, and break-even points.',
+    anchor: 'business'
+  },
+  {
+    name: 'Salary & Pay',
+    description: 'Evaluate hourly wages, annual salaries, overtime pay rates, and raise increases across pay periods.',
+    anchor: 'salary-&-pay'
+  },
+  {
+    name: 'Loans & Interest',
+    description: 'Calculate monthly loan obligations, simple interest, compound growth, APR interest rates, and accelerated payoff schedules.',
+    anchor: 'loans-&-interest'
+  },
+  {
+    name: 'Investment & Savings',
+    description: 'Forecast compounding returns, monthly savings growth, investment portfolios, and total return on investment.',
+    anchor: 'investment-&-savings'
+  }
+];
+
+const popularSlugs = [
+  'percentage-calculator',
+  'profit-margin-calculator',
+  'salary-calculator',
+  'loan-calculator',
+  'compound-interest-calculator',
+  'savings-calculator'
+];
+
+const popularCardsHtml = popularSlugs.map(slug => {
+  const calc = calculators.find(c => c.slug === slug);
+  if (!calc) return '';
+  return `
+    <a href="${calc.path}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">${escapeHtml(calc.category)}</span>
+          <span class="text-[10px] font-semibold text-blue-600 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-full">Popular</span>
+        </div>
+        <h3 class="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">${escapeHtml(calc.h1)}</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">${escapeHtml(calc.shortIntro)}</p>
+      </div>
+      <div class="flex items-center gap-1 text-xs font-medium text-blue-600 pt-4 mt-2">
+        <span>Open calculator</span>
+        <span>&rarr;</span>
+      </div>
+    </a>
+  `;
+}).join('');
+
+const categorySectionsHtml = categoriesList.map(cat => {
+  const catCalcs = calculators.filter(c => c.category === cat.name);
+  const cardsHtml = catCalcs.map(calc => `
+    <a href="${calc.path}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
+      <div class="space-y-2">
+        <h3 class="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">${escapeHtml(calc.h1)}</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">${escapeHtml(calc.shortIntro)}</p>
+      </div>
+      <div class="flex items-center gap-1 text-xs font-medium text-blue-600 pt-4 mt-2">
+        <span>Use tool</span>
+        <span>&rarr;</span>
+      </div>
+    </a>
+  `).join('');
+
+  return `
+    <section id="${cat.anchor}" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 scroll-mt-20">
+      <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">${escapeHtml(cat.name)}</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${escapeHtml(cat.description)}</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${cardsHtml}
+      </div>
+    </section>
+  `;
+}).join('');
+
+const homeBody = `
+  <div class="flex flex-col min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        <a href="/" class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-xs p-1.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full text-white">
+              <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+              <line x1="8" x2="16" y1="6" y2="6"></line>
+              <line x1="16" x2="16" y1="14" y2="18"></line>
+              <path d="M16 10h.01"></path>
+              <path d="M12 10h.01"></path>
+              <path d="M8 10h.01"></path>
+              <path d="M12 14h.01"></path>
+              <path d="M8 14h.01"></path>
+              <path d="M12 18h.01"></path>
+              <path d="M8 18h.01"></path>
+            </svg>
+          </div>
+          <div>
+            <span class="font-bold text-lg text-slate-900 dark:text-white tracking-tight block leading-tight">MoneyCalc Hub</span>
+            <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase block">Simple Calculators · Clear Answers</span>
+          </div>
+        </a>
+        <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+          <a href="/#everyday-money" class="hover:text-blue-600">Money</a>
+          <a href="/#business" class="hover:text-blue-600">Business</a>
+          <a href="/#salary-&-pay" class="hover:text-blue-600">Salary</a>
+          <a href="/#loans-&-interest" class="hover:text-blue-600">Loans</a>
+          <a href="/#investment-&-savings" class="hover:text-blue-600">Investment</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1 space-y-16 py-8 sm:py-12">
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white text-balance">
+          Free Money &amp; Financial Calculators
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          Calculate percentages, discounts, profits, salaries, loans, interest, investments, savings, and more quickly and accurately.
+        </p>
+      </section>
+
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Popular Calculators</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Most visited tools for daily calculations, budgeting, and financial analysis.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          ${popularCardsHtml}
+        </div>
+      </section>
+
+      <div id="all-calculators" class="space-y-16">
+        ${categorySectionsHtml}
+      </div>
+
+      <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200 dark:border-slate-800 space-y-8">
+        <div class="text-center space-y-2">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Why Use MoneyCalc Hub?</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Transparent mathematics, private in-browser processing, and clean online calculation tools.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">100% Free &amp; Private</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">No accounts, sign-ups, or subscriptions. All calculations run strictly in your browser without saving your personal financial data.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Verified Formulas</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Every calculator clearly displays the mathematical formula, logic, and step-by-step example so you understand exactly how your results are generated.</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Fast &amp; Mobile-Optimized</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Designed with responsive layouts, large touch targets, and instant real-time results on smartphones, tablets, and desktops.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white text-center">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          <details class="border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 p-4" open>
+            <summary class="font-semibold text-sm text-slate-900 dark:text-white cursor-pointer hover:text-blue-600">Are all calculators on MoneyCalc Hub completely free to use?</summary>
+            <div class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">Yes, 100% free. There are no paywalls, registration gates, credit card requirements, or locked features. Every calculator is freely available to individuals, small business owners, and professionals.</div>
+          </details>
+          <details class="border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 p-4">
+            <summary class="font-semibold text-sm text-slate-900 dark:text-white cursor-pointer hover:text-blue-600">Is my personal or financial information stored or tracked?</summary>
+            <div class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">No. All calculations are executed client-side directly within your browser. None of your entered numbers, salaries, or financial figures are sent to or stored on any remote server.</div>
+          </details>
+          <details class="border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 p-4">
+            <summary class="font-semibold text-sm text-slate-900 dark:text-white cursor-pointer hover:text-blue-600">How accurate are the financial calculation formulas?</summary>
+            <div class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">Our calculators employ standard mathematical formulas and verified financial equations (including standard monthly amortization annuity equations, compound interest models, and bisection solvers for APR). However, results are estimates for planning purposes and do not replace certified financial or legal counsel.</div>
+          </details>
+          <details class="border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 p-4">
+            <summary class="font-semibold text-sm text-slate-900 dark:text-white cursor-pointer hover:text-blue-600">Can I use MoneyCalc Hub on mobile phones and tablets?</summary>
+            <div class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">Yes. The entire platform is built with a responsive mobile-first architecture, large touch-friendly buttons, and zero horizontal scrolling on Android and iOS devices.</div>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-10 mt-16 text-xs text-slate-500 text-center">
+      <div class="max-w-7xl mx-auto px-4 space-y-4">
+        <p>&copy; ${new Date().getFullYear()} MoneyCalc Hub. All rights reserved. For educational and planning use only.</p>
+        <div class="flex justify-center gap-4 text-slate-600 dark:text-slate-400">
+          <a href="/about/" class="hover:text-blue-600">About Us</a>
+          <a href="/contact/" class="hover:text-blue-600">Contact</a>
+          <a href="/privacy-policy/" class="hover:text-blue-600">Privacy Policy</a>
+          <a href="/terms/" class="hover:text-blue-600">Terms of Service</a>
+          <a href="/disclaimer/" class="hover:text-blue-600">Disclaimer</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+`;
+
+homeHtml = homeHtml.replace('<div id="root"></div>', `<div id="root">${homeBody}</div>`);
+const homeJsonLdSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': 'MoneyCalc Hub',
+    'url': homeCanonicalUrl,
+    'description': 'Simple Calculators. Clear Answers. Fast, accurate, and free online calculators for money, business, salary, loans, interest, and investments.',
+    'potentialAction': {
+      '@type': 'SearchAction',
+      'target': `${homeCanonicalUrl}?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    'name': 'MoneyCalc Hub',
+    'url': homeCanonicalUrl,
+    'logo': `${homeCanonicalUrl}favicon-192x192.png`
+  }
+];
+
+const homeJsonLdHtml = homeJsonLdSchemas.map(s => 
+  `<script type="application/ld+json" data-seo-jsonld="true">${JSON.stringify(s)}</script>`
+).join('\n    ');
+
+homeHtml = homeHtml.replace('</head>', `    ${homeJsonLdHtml}\n  </head>`);
+fs.writeFileSync(templatePath, homeHtml, 'utf8');
+console.log('Pre-rendered homepage: /index.html');
+
 console.log('All 29 static pages pre-rendered successfully!');
+
