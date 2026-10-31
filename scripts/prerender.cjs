@@ -349,11 +349,12 @@ calculators.forEach((calc) => {
   // Inject pre-rendered body inside <div id="root">
   html = html.replace('<div id="root"></div>', `<div id="root">${preRenderedBody}</div>`);
 
-  // Save to dist/<slug>/index.html
+  // Save to dist/<slug>/index.html and dist/<slug>.html
   const outputDir = path.join(distDir, calc.slug);
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(path.join(outputDir, 'index.html'), html, 'utf8');
-  console.log(`Pre-rendered: /${calc.slug}/index.html`);
+  fs.writeFileSync(path.join(distDir, `${calc.slug}.html`), html, 'utf8');
+  console.log(`Pre-rendered: /${calc.slug}/index.html and /${calc.slug}.html`);
 });
 
 // 4. Pre-render 5 Legal pages
@@ -425,7 +426,8 @@ legalPages.forEach(page => {
   const outputDir = path.join(distDir, page.slug);
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(path.join(outputDir, 'index.html'), html, 'utf8');
-  console.log(`Pre-rendered legal: /${page.slug}/index.html`);
+  fs.writeFileSync(path.join(distDir, `${page.slug}.html`), html, 'utf8');
+  console.log(`Pre-rendered legal: /${page.slug}/index.html and /${page.slug}.html`);
 });
 
 // 5. Pre-render Homepage into dist/index.html
