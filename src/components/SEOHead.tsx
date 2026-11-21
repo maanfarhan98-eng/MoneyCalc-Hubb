@@ -7,9 +7,10 @@ interface SEOProps {
   canonicalPath: string;
   calculator?: CalculatorMeta;
   isLegalOrHome?: boolean;
+  robots?: string;
 }
 
-export function SEOHead({ title, description, canonicalPath, calculator, isLegalOrHome }: SEOProps) {
+export function SEOHead({ title, description, canonicalPath, calculator, isLegalOrHome, robots = 'index, follow' }: SEOProps) {
   useEffect(() => {
     // 1. Update Title
     document.title = title;
@@ -25,8 +26,9 @@ export function SEOHead({ title, description, canonicalPath, calculator, isLegal
       meta.setAttribute('content', content);
     };
 
-    // Standard description
+    // Standard description & robots directive
     setMeta('name', 'description', description);
+    setMeta('name', 'robots', robots);
 
     // OpenGraph
     setMeta('property', 'og:title', title);
@@ -134,7 +136,7 @@ export function SEOHead({ title, description, canonicalPath, calculator, isLegal
       const cleanupScripts = document.querySelectorAll('script[data-seo-jsonld]');
       cleanupScripts.forEach(s => s.remove());
     };
-  }, [title, description, canonicalPath, calculator, isLegalOrHome]);
+  }, [title, description, canonicalPath, calculator, isLegalOrHome, robots]);
 
   return null;
 }

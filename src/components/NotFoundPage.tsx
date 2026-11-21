@@ -13,8 +13,9 @@ export function NotFoundPage({ onNavigate, onOpenSearch }: NotFoundProps) {
       <SEOHead
         title="Page Not Found — MoneyCalc Hub"
         description="The calculator page you are looking for does not exist or may have moved."
-        canonicalPath="/404"
+        canonicalPath="/404/"
         isLegalOrHome={true}
+        robots="noindex, nofollow"
       />
       <div className="text-6xl font-bold font-mono text-emerald-600 dark:text-emerald-400">
         404

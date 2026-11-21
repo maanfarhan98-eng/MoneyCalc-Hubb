@@ -10,6 +10,11 @@ export interface CalculatorFAQ {
   answer: string;
 }
 
+export interface CalculatorExample {
+  title: string;
+  scenario: string;
+}
+
 export interface CalculatorMeta {
   id: string;
   slug: string;
@@ -22,9 +27,11 @@ export interface CalculatorMeta {
   primaryKeyword: string;
   secondaryKeywords: string[];
   howItWorks: string;
+  howToUse?: string[];
   formula: string;
   formulaExplanation?: string;
   example: string;
+  examples?: CalculatorExample[];
   whenToUse: string[];
   limitations: string[];
   relatedCalculators: string[]; // slugs
@@ -79,9 +86,28 @@ export const CALCULATORS: CalculatorMeta[] = [
       'percentage of a percentage calculator'
     ],
     howItWorks: 'A percentage expresses a fraction or ratio as a number out of 100. Our calculator solves multiple percentage models by converting your values to decimal equivalents and computing the exact ratio.',
+    howToUse: [
+      'Choose the percentage mode you need: percentage of a number, percentage increase, percentage decrease, or percentage change between two values.',
+      'Enter your starting number or baseline amount and the percentage rate or comparison value.',
+      'Read the exact calculated result, net difference, and step-by-step math immediately without refreshing.'
+    ],
     formula: 'Percentage of Number: Value = (P / 100) × Total\nPercentage Increase / Decrease: % Change = ((New - Original) / Original) × 100\nPercentage Difference: % Diff = (|V1 - V2| / ((V1 + V2) / 2)) × 100',
     formulaExplanation: 'When computing changes, dividing by the initial baseline yields the exact rate of increase or decrease.',
     example: 'Suppose you want to calculate a 15% tip on an $80 restaurant check: (15 / 100) × 80 = $12.00 tip, making the total $92.00.',
+    examples: [
+      {
+        title: 'Example 1: Finding a Percentage of an Amount',
+        scenario: 'Calculate 15% of $80 for a restaurant tip: (15 / 100) × 80 = $12.00. Added to the original bill, the total comes to $92.00.'
+      },
+      {
+        title: 'Example 2: Percentage Increase on Monthly Expenses',
+        scenario: 'Your monthly utility bill rises from $120 to $150. The increase is $30. Percentage increase = (30 / 120) × 100 = 25%.'
+      },
+      {
+        title: 'Example 3: Percentage Decrease on Retail Price',
+        scenario: 'A laptop drops from $1,000 to $820. The reduction is $180. Percentage decrease = (180 / 1,000) × 100 = 18% off.'
+      }
+    ],
     whenToUse: [
       'Calculating tax rates, tips, and shopping discounts',
       'Measuring year-over-year revenue growth or expense reductions',
@@ -130,9 +156,28 @@ export const CALCULATORS: CalculatorMeta[] = [
       'calculate discount amount',
       'final price calculator'
     ],
-    howItWorks: 'The tool multiplies the original retail price by the discount percentage to calculate the total cash saved, then subtracts the discount from the original price and applies any applicable sales tax.',
-    formula: 'Discount Amount = Original Price × (Discount % / 100)\nSale Price = Original Price - Discount Amount\nFinal Price with Tax = Sale Price × (1 + Tax % / 100)',
+    howItWorks: 'The tool multiplies the original retail price by the discount percentage to calculate the total cash saved, then subtracts the discount from the original price and applies any optional extra coupon discount and sales tax.',
+    howToUse: [
+      'Enter the original retail price of the item before any markdowns.',
+      'Input the main discount percentage (for example, 25 for 25% off).',
+      'Optionally add local sales tax (%) or a stacked extra coupon discount (%) to view your exact checkout total.'
+    ],
+    formula: 'Discount Amount = Original Price × (Discount % / 100)\nSale Price = Original Price - Discount Amount\nExtra Discount Price = Sale Price × (1 - Extra Discount % / 100)\nFinal Price with Tax = Discounted Price × (1 + Tax % / 100)',
     example: 'A jacket costs $120.00 with a 25% discount and 8% sales tax. Discount is $120 × 0.25 = $30.00. Sale price is $90.00. With 8% tax ($7.20), final price is $97.20.',
+    examples: [
+      {
+        title: 'Example 1: Single Discount with Sales Tax',
+        scenario: 'A $120.00 jacket is 25% off with 8% sales tax. Discount = $120 × 0.25 = $30.00 saved, leaving a $90.00 sale price. Adding 8% tax ($7.20) brings checkout total to $97.20.'
+      },
+      {
+        title: 'Example 2: Stacked Clearance Discount',
+        scenario: 'A $200.00 appliance is marked 30% off plus an extra 10% loyalty coupon. First discount reduces the price to $140.00 ($60 saved). The extra 10% off $140 saves another $14.00, for a final price of $126.00 (37% effective total discount).'
+      },
+      {
+        title: 'Example 3: Quick Percent-Off Budget Check',
+        scenario: 'A pair of headphones lists at $85.00 with a 40% flash sale and no sales tax entered. Savings = $85.00 × 0.40 = $34.00. You pay $51.00.'
+      }
+    ],
     whenToUse: [
       'Shopping sales events (Black Friday, seasonal clearance, promotional coupons)',
       'Verifying merchant checkout registers and receipt subtotals',
@@ -175,8 +220,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'tip percentage calculator'
     ],
     howItWorks: 'Enter your check amount, select or input your desired gratuity rate, and specify how many guests are sharing the bill. The calculator computes tip amount, grand total, and individual shares instantly.',
+    howToUse: [
+      'Enter the restaurant or service bill subtotal.',
+      'Select a quick gratuity preset (15%, 18%, 20%, 25%) or type a custom tip percentage.',
+      'Adjust the number of people splitting the check and optionally toggle round-up to see each diner’s exact share.'
+    ],
     formula: 'Tip Amount = Bill Subtotal × (Tip % / 100)\nTotal Bill = Bill Subtotal + Tip Amount\nShare per Person = Total Bill / Number of People',
     example: 'A dinner bill is $85.00. At an 18% gratuity rate with 3 diners: Tip is $85.00 × 0.18 = $15.30. Total is $100.30. Each guest owes $33.43.',
+    examples: [
+      {
+        title: 'Example 1: Group Dinner Split Evenly',
+        scenario: 'An $85.00 dinner bill with an 18% tip split among 3 people: Tip = $15.30, Grand Total = $100.30, and each person pays $33.43.'
+      },
+      {
+        title: 'Example 2: Solo Lunch with 20% Service Tip',
+        scenario: 'A $24.50 lunch check for 1 person at 20% gratuity: Tip = $24.50 × 0.20 = $4.90, bringing the final total to $29.40.'
+      },
+      {
+        title: 'Example 3: Large Party with Rounded-Up Total',
+        scenario: 'A $240.00 check for 6 colleagues at 20% tip equals $48.00 gratuity and $288.00 total, or exactly $48.00 per person.'
+      }
+    ],
     whenToUse: [
       'Dining out at restaurants, cafes, and bars',
       'Tipping personal service providers (hairdressers, food delivery, rideshares)',
@@ -218,8 +282,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'age checker online'
     ],
     howItWorks: 'Select your date of birth and reference date (defaults to today). The calculator factors in leap years and calendar month day-counts to deliver exact calendar measurements.',
+    howToUse: [
+      'Select or type the Date of Birth using the calendar input.',
+      'Keep "Age as of Date" set to today, or pick any past or future target date.',
+      'View exact chronological age in years, months, days, total weeks, total days lived, and days until the next birthday.'
+    ],
     formula: 'Exact Age = Target Date - Date of Birth (evaluated in calendar years, whole months, and remaining days).',
     example: 'Born on March 15, 1995 evaluated on September 26, 2026: The age is exactly 31 years, 6 months, and 11 days.',
+    examples: [
+      {
+        title: 'Example 1: Standard Current Age Check',
+        scenario: 'For a birth date of March 15, 1995 evaluated on September 26, 2026, the exact age is 31 years, 6 months, and 11 days (11,518 total days).'
+      },
+      {
+        title: 'Example 2: Future Retirement Milestone Date',
+        scenario: 'Born May 10, 1968 and evaluating as of May 10, 2033: You will turn exactly 65 years, 0 months, and 0 days old on that target date.'
+      },
+      {
+        title: 'Example 3: Newborn Age in Weeks and Days',
+        scenario: 'For a baby born April 1, 2026 evaluated on October 15, 2026: Exact age is 6 months and 14 days, or 28 weeks and 1 day (197 total days).'
+      }
+    ],
     whenToUse: [
       'Completing official government, employment, or academic paperwork',
       'Verifying legal age for contracts, driving, voting, or retirement benefits',
@@ -260,8 +343,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'commission on sales calculator'
     ],
     howItWorks: 'Enter your total sales volume, designated commission rate, and optional base salary. The calculator provides the commission earned and total compensation.',
+    howToUse: [
+      'Enter the total gross sales revenue or transaction value closed.',
+      'Enter your contracted commission rate percentage (for example, 6.5%).',
+      'Optionally add your fixed base salary for the pay period to see combined gross earnings.'
+    ],
     formula: 'Commission Earned = Total Sales Volume × (Commission Rate % / 100)\nTotal Payout = Base Salary + Commission Earned',
     example: 'A sales consultant sells $140,000 worth of merchandise at a 6.5% commission rate with a $2,500 monthly base salary: Commission = $140,000 × 0.065 = $9,100. Total payout = $11,600.',
+    examples: [
+      {
+        title: 'Example 1: Base Salary Plus Monthly Sales Commission',
+        scenario: 'A sales rep closes $140,000 in sales at a 6.5% commission rate with a $2,500 base salary. Commission earned = $9,100.00, and total payout = $11,600.00.'
+      },
+      {
+        title: 'Example 2: Real Estate Agent Pure Commission',
+        scenario: 'A realtor closes a $420,000 property sale at a 3% commission split with $0 base pay. Commission earned = $420,000 × 0.03 = $12,600.00.'
+      },
+      {
+        title: 'Example 3: Retail Quota Bonus Estimate',
+        scenario: 'An associate generates $18,500 in monthly floor sales at a 4% commission rate plus a $1,800 base draw. Commission = $740.00; total monthly pay = $2,540.00.'
+      }
+    ],
     whenToUse: [
       'Sales representatives forecasting quarterly or monthly bonuses',
       'Business owners planning sales commission compensation tiers',
@@ -304,8 +406,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'markup formula'
     ],
     howItWorks: 'Markup represents the percentage added to the cost of a product to determine its selling price. The calculator computes the selling price, gross dollar profit, and matching profit margin.',
+    howToUse: [
+      'Enter the wholesale purchase price or manufacturing cost of the item.',
+      'Enter the desired markup percentage you want to add on top of your cost.',
+      'Review the recommended selling price, dollar profit per unit, and equivalent profit margin %.'
+    ],
     formula: 'Selling Price = Cost × (1 + Markup % / 100)\nMarkup % = ((Selling Price - Cost) / Cost) × 100\nProfit Margin % = ((Selling Price - Cost) / Selling Price) × 100',
     example: 'An item costs $40.00 wholesale and you apply a 60% markup: Markup amount = $40 × 0.60 = $24.00. Selling price = $64.00. The corresponding profit margin is ($24 / $64) = 37.5%.',
+    examples: [
+      {
+        title: 'Example 1: Standard Retail Keystone Markup (100%)',
+        scenario: 'A boutique buys a handbag for $45.00 and applies a 100% markup: Dollar markup = $45.00, Selling price = $90.00, and Gross Profit Margin = 50.0%.'
+      },
+      {
+        title: 'Example 2: Moderate E-Commerce Markup (60%)',
+        scenario: 'An item costs $40.00 wholesale with a 60% markup: Profit per unit = $24.00, Retail Selling Price = $64.00, and Profit Margin = 37.5%.'
+      },
+      {
+        title: 'Example 3: Low-Margin High-Volume Electronics (25%)',
+        scenario: 'An accessory costs $80.00 from a distributor and uses a 25% markup: Profit = $20.00, Selling Price = $100.00, and Profit Margin = 20.0%.'
+      }
+    ],
     whenToUse: [
       'Retailers setting product price points to cover overhead',
       'Manufacturers pricing fabricated parts and raw materials',
@@ -348,8 +469,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'revenue and cost calculator'
     ],
     howItWorks: 'Enter your total gross sales revenue and all associated costs (COGS and overhead). The calculator computes dollar profit and your profit percentage on revenue and cost.',
+    howToUse: [
+      'Enter your Total Revenue from sales or completed contracts.',
+      'Enter your Cost of Goods Sold (COGS) such as inventory, materials, or fulfillment.',
+      'Enter any additional Operating Expenses (rent, software, marketing) to inspect both Gross Profit and Net Profit.'
+    ],
     formula: 'Profit = Total Revenue - Total Costs\nProfit Margin % = (Profit / Total Revenue) × 100\nProfit Markup % = (Profit / Total Costs) × 100',
     example: 'A business generates $50,000 in monthly sales with $32,000 in total expenses: Profit = $50,000 - $32,000 = $18,000. Profit margin is 36%, and profit percentage on cost is 56.25%.',
+    examples: [
+      {
+        title: 'Example 1: Small Business Monthly Profit Review',
+        scenario: 'Total Revenue = $50,000, COGS = $20,000, Operating Expenses = $12,000 ($32,000 total costs). Gross Profit = $30,000 (60% gross margin); Net Profit = $18,000 (36% net margin).'
+      },
+      {
+        title: 'Example 2: Single Product Batch Profit',
+        scenario: 'You sell 200 units for $6,000 total revenue with $2,400 in manufacturing costs and $600 in shipping/ads. Net Profit = $3,000, equal to a 50% profit margin and 100% markup on total cost.'
+      },
+      {
+        title: 'Example 3: Freelance Project Margin Check',
+        scenario: 'A client project bills $4,500 with $300 in software licenses and $900 in subcontractor fees ($1,200 total costs). Net Profit = $3,300 (73.33% margin).'
+      }
+    ],
     whenToUse: [
       'Monthly and quarterly financial reviews',
       'Product line profitability analysis',
@@ -393,8 +533,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'net margin calculator'
     ],
     howItWorks: 'Enter your unit cost and selling price (or enter cost and target margin percentage). The calculator solves the equation to reveal your exact gross margin, dollar profit, and equivalent markup.',
+    howToUse: [
+      'Select whether you want to find your Margin from Cost & Selling Price, or solve for Selling Price from Cost & Target Margin %.',
+      'Enter your unit cost and either your selling price or desired margin percentage.',
+      'Review the calculated Profit Margin %, gross dollar profit, and equivalent Markup %.'
+    ],
     formula: 'Gross Margin % = ((Revenue - Cost) / Revenue) × 100\nSelling Price = Cost / (1 - (Target Margin % / 100))\nGross Profit = Revenue - Cost',
     example: 'If an item costs $60 to produce and you sell it for $100: Gross Profit is $40. Profit margin is ($40 / $100) = 40.0%. The equivalent markup on cost is ($40 / $60) = 66.67%.',
+    examples: [
+      {
+        title: 'Example 1: Calculating Margin from Cost and Price',
+        scenario: 'Unit Cost = $60.00, Selling Price = $100.00. Gross Profit = $40.00, Gross Profit Margin = 40.0%, and equivalent Markup on cost = 66.67%.'
+      },
+      {
+        title: 'Example 2: Pricing a Product for a 35% Margin Target',
+        scenario: 'Unit Cost = $26.00 with a target 35% margin: Selling Price = $26.00 / (1 - 0.35) = $40.00. Dollar profit per unit = $14.00.'
+      },
+      {
+        title: 'Example 3: Service Retainer Margin Audit',
+        scenario: 'A $2,500 monthly agency retainer costs $1,625 in delivery labor. Gross Profit = $875, giving a 35.0% profit margin.'
+      }
+    ],
     whenToUse: [
       'Setting retail prices to maintain strict gross margin targets',
       'Benchmarking industry standards against company performance',
@@ -438,8 +597,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'contribution margin calculator'
     ],
     howItWorks: 'The tool calculates your contribution margin (selling price minus variable cost per unit) and divides total fixed expenses by that margin to yield the exact break-even sales volume.',
+    howToUse: [
+      'Enter your Total Fixed Costs (such as rent, base payroll, insurance, and software subscriptions).',
+      'Enter the Unit Selling Price charged to customers.',
+      'Enter the Variable Cost per Unit (materials, packaging, shipping, payment fees) to compute Break-Even Units and Break-Even Revenue.'
+    ],
     formula: 'Contribution Margin = Selling Price per Unit - Variable Cost per Unit\nBreak-Even Units = Total Fixed Costs / Contribution Margin\nBreak-Even Revenue = Break-Even Units × Selling Price per Unit',
     example: 'Fixed rent and salaries are $15,000/month. You sell a gadget for $50, with $20 in variable costs per unit. Contribution margin is $30/unit. Break-even volume is $15,000 / $30 = 500 units ($25,000 in revenue).',
+    examples: [
+      {
+        title: 'Example 1: Monthly Retail Store Break-Even',
+        scenario: 'Fixed Costs = $15,000/month, Selling Price = $50/unit, Variable Cost = $20/unit. Contribution margin is $30/unit, so you need 500 units ($25,000 revenue) to break even.'
+      },
+      {
+        title: 'Example 2: Coffee Shop Daily Cup Target',
+        scenario: 'Fixed overhead = $6,000/month, average drink price = $5.00, variable cup/ingredient cost = $1.25. Contribution margin = $3.75/cup. Break-even = 1,600 drinks/month ($8,000 revenue).'
+      },
+      {
+        title: 'Example 3: Consulting Workshop Launch',
+        scenario: 'Event venue & marketing fixed costs = $4,200, ticket price = $250, catering/materials variable cost = $40/attendee. Contribution margin = $210. Break-even = 20 paid seats ($5,000 revenue).'
+      }
+    ],
     whenToUse: [
       'Writing business plans and pitch decks for investors',
       'Evaluating whether to launch a new product or service tier',
@@ -482,8 +660,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'cagr calculator'
     ],
     howItWorks: 'Enter your initial capital invested and the final value or return. The calculator computes the absolute cash profit, standard ROI percentage, and annualized compound rate.',
+    howToUse: [
+      'Enter the Initial Investment amount put into the project, campaign, or asset.',
+      'Enter the Final Value returned at the end of the period.',
+      'Set the Investment Period in years to also view the annualized compound return (CAGR).'
+    ],
     formula: 'Net Return = Final Value - Initial Investment\nROI % = (Net Return / Initial Investment) × 100\nAnnualized ROI % = (((Final Value / Initial Investment) ^ (1 / Years)) - 1) × 100',
     example: 'You invested $20,000 into a business venture that returned $28,000 after 3 years: Net profit is $8,000. Total ROI is ($8,000 / $20,000) = 40.0%. Annualized return (CAGR) is 11.87% per year.',
+    examples: [
+      {
+        title: 'Example 1: Multi-Year Business Equipment Investment',
+        scenario: 'Invest $20,000 and realize $28,000 in cumulative value over 3 years: Net Gain = $8,000, Total ROI = 40.0%, and Annualized ROI = 11.87% per year.'
+      },
+      {
+        title: 'Example 2: Digital Marketing Campaign ROI',
+        scenario: 'Spend $2,500 on an ad campaign over 1 year that brings $6,250 in net attributed revenue: Net Profit = $3,750, Total ROI = 150.0%.'
+      },
+      {
+        title: 'Example 3: Five-Year Stock Portfolio Position',
+        scenario: 'Invest $10,000 that grows to $16,105 after 5 years: Net Gain = $6,105, Total ROI = 61.05%, and Annualized ROI = 10.0% per year.'
+      }
+    ],
     whenToUse: [
       'Evaluating marketing campaigns and customer acquisition channels',
       'Comparing real estate, stock, or business investment opportunities',
@@ -527,8 +724,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'annual salary calculator'
     ],
     howItWorks: 'Enter either an hourly wage or annual compensation with standard work hours per week (default 40) and weeks worked per year (default 52). The tool breaks down earnings across all pay schedules.',
+    howToUse: [
+      'Choose whether to convert from Hourly Rate to Salary, or from Annual Salary to Hourly Rate.',
+      'Enter your wage or annual pay amount.',
+      'Customize Hours per Week (default 40) and Weeks per Year (default 52) to view daily, weekly, bi-weekly, semi-monthly, monthly, and annual gross figures.'
+    ],
     formula: 'Annual Salary = Hourly Rate × Hours per Week × Weeks per Year\nHourly Rate = Annual Salary / (Hours per Week × Weeks per Year)\nMonthly Pay = Annual Salary / 12\nBi-Weekly Pay = Annual Salary / 26',
     example: 'At $32.00 per hour working 40 hours a week for 52 weeks: Weekly gross is $1,280.00. Bi-weekly pay is $2,560.00. Monthly average is $5,546.67. Annual salary is $66,560.00.',
+    examples: [
+      {
+        title: 'Example 1: Full-Time Hourly to Annual Salary',
+        scenario: 'At $32.00/hour for 40 hours/week across 52 weeks (2,080 hours): Annual Salary = $66,560.00, Monthly = $5,546.67, Bi-Weekly = $2,560.00, Weekly = $1,280.00.'
+      },
+      {
+        title: 'Example 2: Annual Corporate Salary to Hourly Rate',
+        scenario: 'An $83,200 annual salary on a standard 40-hour, 52-week schedule equals $40.00/hour, $1,600.00/week, and $6,933.33/month.'
+      },
+      {
+        title: 'Example 3: Part-Time Schedule Conversion',
+        scenario: 'Working 25 hours/week for 50 weeks at $24.00/hour (1,250 annual hours): Annual Salary = $30,000.00, Monthly average = $2,500.00.'
+      }
+    ],
     whenToUse: [
       'Negotiating job compensation packages or promotion offers',
       'Budgeting monthly mortgage and living expenses from an hourly wage',
@@ -571,8 +787,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'weekly pay calculator'
     ],
     howItWorks: 'Input your standard hourly rate, regular weekly hours (usually 40), total hours worked, and your overtime multiplier (typically 1.5x). The calculator breaks down regular vs. overtime wages.',
+    howToUse: [
+      'Enter your standard Hourly Rate.',
+      'Enter Total Hours Worked during the week along with your Regular Hours Cap (typically 40).',
+      'Choose your Overtime Multiplier (1.5x time-and-a-half or 2.0x double time) to see regular pay, overtime pay, and gross earnings.'
+    ],
     formula: 'Overtime Rate = Regular Hourly Rate × Overtime Multiplier (1.5x)\nRegular Pay = Regular Hours × Regular Hourly Rate\nOvertime Pay = Overtime Hours × Overtime Rate\nGross Pay = Regular Pay + Overtime Pay',
     example: 'An employee earns $26.00/hour and works 48 hours in a week with time-and-a-half (1.5x) for hours over 40: Regular pay = 40 × $26 = $1,040. Overtime rate = $39/hr. Overtime pay = 8 × $39 = $312. Total pay = $1,352.00.',
+    examples: [
+      {
+        title: 'Example 1: Standard Time-and-a-Half Overtime (1.5x)',
+        scenario: 'Hourly rate = $26.00, Total hours = 48 (40 regular + 8 overtime at 1.5x). Regular pay = $1,040.00, Overtime rate = $39.00/hr, Overtime pay = $312.00, Total Weekly Gross = $1,352.00.'
+      },
+      {
+        title: 'Example 2: Holiday Double-Time Shift (2.0x)',
+        scenario: 'Hourly rate = $30.00, Total hours = 50 (40 regular + 10 overtime at 2.0x). Regular pay = $1,200.00, Overtime rate = $60.00/hr, Overtime pay = $600.00, Total Gross = $1,800.00.'
+      },
+      {
+        title: 'Example 3: Light Weekly Overtime (43 Hours)',
+        scenario: 'Hourly rate = $20.00, Total hours = 43 (40 regular + 3 overtime at 1.5x). Regular pay = $800.00, Overtime pay = $90.00, Total Gross = $890.00.'
+      }
+    ],
     whenToUse: [
       'Verifying weekly payroll stubs and overtime disbursements',
       'Budgeting additional income from weekend shifts and busy seasons',
@@ -614,8 +849,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'salary raise calculator'
     ],
     howItWorks: 'Enter your current compensation (hourly or annual) and the proposed raise percentage or fixed dollar amount. The calculator computes your updated earnings and incremental gains.',
+    howToUse: [
+      'Select your Pay Frequency (Annual Salary or Hourly Rate).',
+      'Enter your current pay figure.',
+      'Choose Percentage (%) or Dollar Amount ($) for your raise and enter the increase to see your new annual, monthly, bi-weekly, and hourly pay.'
+    ],
     formula: 'Raise Amount = Current Salary × (Raise % / 100)\nNew Salary = Current Salary + Raise Amount\nNew Hourly Rate = New Annual Salary / 2,080',
     example: 'You earn $65,000 annually and receive a 4.5% annual merit raise: Annual increase is $2,925.00. New annual salary is $67,925.00, yielding an extra $243.75 per month or $112.50 per bi-weekly paycheck.',
+    examples: [
+      {
+        title: 'Example 1: Annual Merit Percentage Raise',
+        scenario: 'Current salary = $65,000 with a 4.5% raise: Annual increase = $2,925.00, New Annual Salary = $67,925.00 (+$243.75/month or +$112.50 per bi-weekly check).'
+      },
+      {
+        title: 'Example 2: Hourly Wage Dollar Increase',
+        scenario: 'Current hourly rate = $25.00/hr with a $2.50/hr raise (10% increase): New hourly rate = $27.50/hr, raising full-time annual gross from $52,000 to $57,200.'
+      },
+      {
+        title: 'Example 3: Promotion Salary Bump (12%)',
+        scenario: 'Current salary = $80,000 with a 12% promotion raise: Raise = $9,600/year, New Salary = $89,600/year ($7,466.67/month).'
+      }
+    ],
     whenToUse: [
       'Preparing for annual performance reviews and compensation negotiations',
       'Comparing job offers with percentage salary bumps',
@@ -657,8 +911,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'amortization calculator'
     ],
     howItWorks: 'Using standard amortization mathematics, the calculator factors in principal, annual interest rate (APR), and loan term duration to determine level monthly debt service.',
+    howToUse: [
+      'Enter the total Loan Amount you plan to borrow.',
+      'Enter the annual Interest Rate (% APR).',
+      'Set the Loan Term in years to inspect your monthly payment, total interest paid, and total repayment cost.'
+    ],
     formula: 'M = P × [ r(1 + r)^n ] / [ (1 + r)^n - 1 ]\nWhere:\nM = Monthly Payment\nP = Principal Loan Amount\nr = Monthly Interest Rate (APR / 12 / 100)\nn = Total Number of Monthly Payments',
     example: 'A $25,000 auto loan at 6.0% APR over a 5-year term (60 months): Monthly payment is $483.32. Total interest paid is $3,999.20. Total repayment is $28,999.20.',
+    examples: [
+      {
+        title: 'Example 1: 5-Year Auto Loan',
+        scenario: 'Borrow $25,000 at 6.0% APR for 5 years (60 months): Monthly Payment = $483.32, Total Interest = $3,999.20, Total Repayment = $28,999.20.'
+      },
+      {
+        title: 'Example 2: 3-Year Personal Debt Consolidation Loan',
+        scenario: 'Borrow $12,000 at 9.5% APR for 3 years (36 months): Monthly Payment = $384.40, Total Interest = $1,838.40, Total Repayment = $13,838.40.'
+      },
+      {
+        title: 'Example 3: 30-Year Fixed Home Mortgage Principal',
+        scenario: 'Borrow $300,000 at 6.5% APR for 30 years (360 months): Monthly Principal & Interest = $1,896.20, Total Interest = $382,633.47.'
+      }
+    ],
     whenToUse: [
       'Comparing financing options for auto, home, or personal loans',
       'Evaluating how loan term length affects monthly cash flow versus overall interest',
@@ -702,8 +975,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'interest rate calculator'
     ],
     howItWorks: 'Simple interest accrues strictly on the original principal balance without compounding. Enter the principal, annual interest rate, and duration in years, months, or days.',
+    howToUse: [
+      'Enter the starting Principal Amount borrowed or invested.',
+      'Enter the Annual Interest Rate (%).',
+      'Enter the Duration and choose years, months, or days to calculate total simple interest and ending balance.'
+    ],
     formula: 'Simple Interest (I) = P × r × t\nTotal Repayment (A) = P + I = P × (1 + r × t)\nWhere P = Principal, r = Annual Rate (decimal), t = Time in Years',
     example: 'A loan of $5,000 at 5% simple annual interest for 3 years: Interest earned = $5,000 × 0.05 × 3 = $750. Total repayment amount is $5,750.',
+    examples: [
+      {
+        title: 'Example 1: Multi-Year Personal Note',
+        scenario: 'Principal = $5,000 at 5.0% annual simple interest for 3 years: Interest = $5,000 × 0.05 × 3 = $750.00. Total repayment = $5,750.00.'
+      },
+      {
+        title: 'Example 2: Short-Term 6-Month Bridge Loan',
+        scenario: 'Principal = $10,000 at 8.0% simple interest for 6 months (0.5 years): Interest = $10,000 × 0.08 × 0.5 = $400.00. Total owed = $10,400.00.'
+      },
+      {
+        title: 'Example 3: 90-Day Treasury or Commercial Note',
+        scenario: 'Principal = $20,000 at 4.5% for 90 days (90/365 years): Interest = $20,000 × 0.045 × (90 / 365) = $221.92. Total balance = $20,221.92.'
+      }
+    ],
     whenToUse: [
       'Informal loans between family members or business partners',
       'Short-term commercial paper and treasury bills',
@@ -745,8 +1037,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'compounding calculator'
     ],
     howItWorks: 'Calculates the future value of an initial deposit plus optional monthly additions, compounding at your chosen frequency (daily, monthly, quarterly, or annually).',
+    howToUse: [
+      'Enter your Initial Principal deposit.',
+      'Add an optional Monthly Contribution you plan to deposit regularly.',
+      'Enter the Annual Interest Rate (%), Time Horizon in years, and select a Compounding Frequency (Monthly, Daily, Quarterly, or Annually).'
+    ],
     formula: 'A = P(1 + r/n)^(nt) + PMT × [ ((1 + r/n)^(nt) - 1) / (r/n) ]\nWhere P = Principal, r = Annual rate, n = Compounding frequency per year, t = Years, PMT = Monthly addition',
     example: '$10,000 principal at 7% annual interest compounded monthly over 10 years without extra deposits: Final balance is $20,096.61 ($10,096.61 in interest earned).',
+    examples: [
+      {
+        title: 'Example 1: Lump Sum Compounding Over 10 Years',
+        scenario: '$10,000 initial principal with $0 monthly additions at 7% annual rate compounded monthly for 10 years grows to $20,096.61 ($10,096.61 interest earned).'
+      },
+      {
+        title: 'Example 2: Lump Sum Plus Monthly Deposits',
+        scenario: '$5,000 initial deposit plus $200/month at 6% interest compounded monthly for 15 years: Total contributed = $41,000; Final Balance = $70,432.68 ($29,432.68 compound interest).'
+      },
+      {
+        title: 'Example 3: Daily vs. Annual Compounding Check',
+        scenario: '$25,000 deposited at 5% for 5 years with annual compounding equals $31,907.04, while monthly compounding reaches $32,083.97.'
+      }
+    ],
     whenToUse: [
       'Projecting long-term retirement and high-yield savings account balances',
       'Analyzing credit card interest accumulation on revolving debt',
@@ -789,9 +1100,28 @@ export const CALCULATORS: CalculatorMeta[] = [
       'car payment calculator',
       'fixed payment calculator'
     ],
-    howItWorks: 'Enter your loan balance, interest rate, and term in months or years. The calculator solves the exact monthly annuity payment required to amortize the debt to zero.',
-    formula: 'Monthly Payment = [ P × r × (1 + r)^n ] / [ (1 + r)^n - 1 ]\nWhere P = Principal, r = Monthly interest rate (APR / 12), n = Total payment months.',
+    howItWorks: 'Enter your purchase price, down payment, interest rate, and term in months or years. The calculator solves the exact monthly annuity payment required to amortize the financed balance to zero.',
+    howToUse: [
+      'Enter the total Purchase Price (or total loan size if $0 down payment).',
+      'Enter any Down Payment or trade-in credit to determine the financed loan principal.',
+      'Set the Interest Rate (% APR) and Loan Term to see your exact monthly payment, total interest, and total loan cost.'
+    ],
+    formula: 'Loan Principal (P) = Purchase Price - Down Payment\nMonthly Payment = [ P × r × (1 + r)^n ] / [ (1 + r)^n - 1 ]\nWhere r = Monthly interest rate (APR / 12), n = Total payment months.',
     example: 'Borrowing $35,000 for a car at 5.5% interest for 48 months: Monthly payment is $813.78. Total repayment is $39,061.44 ($4,061.44 total interest).',
+    examples: [
+      {
+        title: 'Example 1: Car Financing with Down Payment',
+        scenario: 'Purchase Price = $40,000, Down Payment = $5,000 ($35,000 financed) at 5.5% APR for 48 months: Monthly Payment = $813.78, Total Interest = $4,061.44.'
+      },
+      {
+        title: 'Example 2: Personal Loan with Zero Down Payment',
+        scenario: 'Purchase Price = $15,000, Down Payment = $0 at 8.0% APR for 36 months: Monthly Payment = $470.05, Total Interest = $1,921.64.'
+      },
+      {
+        title: 'Example 3: Extended 72-Month Auto Loan Comparison',
+        scenario: 'Financing $30,000 at 6.5% APR over 72 months gives a $504.30 monthly payment with $6,309.51 in total interest.'
+      }
+    ],
     whenToUse: [
       'Determining if a new vehicle or personal loan fits within your monthly budget',
       'Comparing financing quotes from different banks or credit unions',
@@ -834,8 +1164,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'implied interest rate'
     ],
     howItWorks: 'By supplying the loan principal, monthly installment amount, and total months, our mathematical solver iteratively determines the exact annual interest rate governing the agreement.',
+    howToUse: [
+      'Choose Amortized Loan Mode (to solve APR from monthly payments) or Simple Interest Mode (from total interest paid).',
+      'Enter the Loan Amount / Principal and either the Monthly Payment or Total Interest Paid.',
+      'Enter the Term in months or years to uncover the exact effective annual interest rate.'
+    ],
     formula: 'For simple interest: r = (Interest / (Principal × Time)) × 100\nFor amortized loans: Solved numerically via the bisection method where f(r) = Monthly Payment - [P × r(1+r)^n] / [(1+r)^n - 1] = 0.',
     example: 'You borrow $10,000 and are quoted 36 monthly payments of $310.00: The implied annual interest rate is 7.27% APR, with $1,160 in total finance charges.',
+    examples: [
+      {
+        title: 'Example 1: Checking a Dealer Car Payment Quote',
+        scenario: 'Borrow $10,000 with 36 monthly payments of $310.00: Total paid = $11,160.00 ($1,160 interest). Implied Annual Interest Rate = 7.27% APR.'
+      },
+      {
+        title: 'Example 2: Equipment Financing Offer Audit',
+        scenario: 'Borrow $25,000 over 60 months at $510.00/month: Total paid = $30,600.00 ($5,600 interest). Effective APR = 8.23%.'
+      },
+      {
+        title: 'Example 3: Simple Interest Note Rate Check',
+        scenario: 'Borrow $8,000 for 2 years and repay $960 in simple interest: Effective Annual Rate = ($960 / ($8,000 × 2)) × 100 = 6.00%.'
+      }
+    ],
     whenToUse: [
       'Uncovering hidden interest rates on dealer financing and "no-money-down" promotions',
       'Verifying peer-to-peer and equipment leasing agreements',
@@ -877,8 +1226,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'debt payoff calculator'
     ],
     howItWorks: 'Enter your remaining loan balance, current interest rate, and current monthly payment. Add an extra monthly contribution to instantly see your new debt-free date and total dollars saved.',
+    howToUse: [
+      'Enter your Remaining Loan Balance and current Interest Rate (% APR).',
+      'Enter your current required Monthly Payment.',
+      'Enter any Extra Payment per Month to compare your original payoff schedule against the accelerated debt-free timeline and interest savings.'
+    ],
     formula: 'Number of Months remaining: n = -ln(1 - (r × P / M)) / ln(1 + r)\nSavings = Original Total Interest - Accelerated Total Interest',
     example: 'A $20,000 balance at 7% interest with a regular $300 monthly payment: Adding $100 extra/month ($400 total) cuts repayment from 86 months down to 59 months, saving 27 months and $2,185 in interest.',
+    examples: [
+      {
+        title: 'Example 1: Auto Loan with $100 Extra Monthly Payment',
+        scenario: '$20,000 balance at 7.0% APR with $300/month regular payment: Adding $100/month extra ($400 total) cuts payoff from 86 months to 59 months, saving 27 months and $2,185 in interest.'
+      },
+      {
+        title: 'Example 2: High-APR Debt Accelerated Paydown',
+        scenario: '$8,000 balance at 18.0% APR with a $220/month payment: Adding $80/month extra ($300 total) cuts payoff from 56 months to 35 months and saves $1,843 in interest.'
+      },
+      {
+        title: 'Example 3: Student Loan Extra $50 Monthly Check',
+        scenario: '$15,000 balance at 5.5% APR paying $180/month: Adding $50/month ($230 total) cuts payoff from 107 months to 79 months, saving 28 months and $1,148 in interest.'
+      }
+    ],
     whenToUse: [
       'Formulating a debt snowball or debt avalanche repayment strategy',
       'Evaluating whether to put tax refunds or bonuses toward loan balances',
@@ -921,8 +1289,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'portfolio growth calculator'
     ],
     howItWorks: 'Compounds your starting capital and monthly additions over your chosen investment horizon, illustrating the balance between your out-of-pocket contributions and capital growth.',
+    howToUse: [
+      'Enter your initial Starting Capital invested.',
+      'Enter your ongoing Monthly Addition.',
+      'Set your Expected Annual Return (%) and Time Horizon (Years) to view projected portfolio value, total contributions, and total investment gains.'
+    ],
     formula: 'Future Value = P × (1 + r)^t + PMT × [ ((1 + r/12)^(12t) - 1) / (r/12) ]\nWhere P = Initial deposit, r = Annual return rate, PMT = Monthly addition, t = Years',
     example: 'Starting with $5,000 and contributing $400 every month for 20 years at an 8% expected annual return: Total invested is $101,000. Final portfolio value reaches $259,578 ($158,578 in investment gains).',
+    examples: [
+      {
+        title: 'Example 1: 20-Year Index Fund Growth Plan',
+        scenario: '$5,000 starting capital plus $400/month at an 8% annual return over 20 years: Total contributions = $101,000; Final Portfolio Value = $259,578 ($158,578 in market gains).'
+      },
+      {
+        title: 'Example 2: 30-Year Long-Term Retirement Horizon',
+        scenario: '$10,000 initial deposit plus $500/month at 7% annual return for 30 years: Total invested = $190,000; Projected Portfolio = $686,110.'
+      },
+      {
+        title: 'Example 3: Medium-Term 10-Year Wealth Builder',
+        scenario: '$20,000 initial capital plus $300/month at 6% return over 10 years: Total contributed = $56,000; Ending Balance = $84,981.'
+      }
+    ],
     whenToUse: [
       'Retirement planning (401k, IRA, taxable brokerage accounts)',
       'Modeling index fund and ETF long-term compounding',
@@ -966,8 +1353,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'savings growth calculator'
     ],
     howItWorks: 'Enter your initial deposit, regular monthly savings contribution, annual percentage yield (APY), and target timeframe to see your total balance and interest earnings.',
+    howToUse: [
+      'Enter your Initial Deposit already in your savings account.',
+      'Enter the fixed Monthly Contribution you plan to set aside.',
+      'Enter the account Interest Rate / APY (%) and Savings Duration (Years) to inspect total deposits, interest earned, and ending savings balance.'
+    ],
     formula: 'Balance = Initial × (1 + r/12)^(12 × Years) + Monthly Deposit × [ ((1 + r/12)^(12 × Years) - 1) / (r/12) ]',
     example: 'Save $250 every month in a High-Yield Savings Account earning 4.5% APY with $1,000 initial balance: In 5 years, you will have deposited $16,000 and earned $2,075 in interest, reaching $18,075.',
+    examples: [
+      {
+        title: 'Example 1: 5-Year High-Yield Savings Goal',
+        scenario: '$1,000 initial deposit + $250/month at 4.5% APY for 5 years: Total deposits = $16,000, Interest earned = $2,075, Ending Savings = $18,075.'
+      },
+      {
+        title: 'Example 2: Building an Emergency Fund in 2 Years',
+        scenario: '$500 initial balance + $400/month at 4.0% APY for 2 years: Total deposited = $10,100, Interest = $419, Total Balance = $10,519.'
+      },
+      {
+        title: 'Example 3: House Down Payment Fund Over 4 Years',
+        scenario: '$5,000 starting savings + $600/month at 4.25% APY for 4 years: Total deposits = $33,800, Interest earned = $3,430, Final Balance = $37,230.'
+      }
+    ],
     whenToUse: [
       'Building a 3 to 6-month emergency reserve fund',
       'Saving for a home down payment or wedding budget',
@@ -1010,8 +1416,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'reinvested dividends calculator'
     ],
     howItWorks: 'Computes future asset valuation combining your initial balance, recurring contributions, compounding interval (daily, monthly, quarterly, annual), and growth rate.',
+    howToUse: [
+      'Enter your Initial Investment amount.',
+      'Specify your recurring Monthly Addition and expected Annual Return Rate (%).',
+      'Select your Investment Horizon (Years) and Compounding Frequency to compare principal invested vs. compounded investment growth.'
+    ],
     formula: 'A = P(1 + r/n)^(nt) + PMT × [ ((1 + r/n)^(nt) - 1) / (r/n) ]\nCompounding frequency n adjusts how frequently returns are capitalized into the principal balance.',
     example: 'An initial $15,000 investment with $300 monthly addition at 9% return compounded quarterly over 15 years yields $224,960. Your deposits were $69,000, while compound growth generated $155,960.',
+    examples: [
+      {
+        title: 'Example 1: Quarterly Compounding Dividend Portfolio',
+        scenario: '$15,000 initial balance + $300/month at 9% return compounded quarterly for 15 years: Deposits = $69,000; Compound Growth = $155,960; Final Value = $224,960.'
+      },
+      {
+        title: 'Example 2: Monthly Compounding Over 25 Years',
+        scenario: '$10,000 initial investment + $250/month at 8% compounded monthly over 25 years: Total Invested = $85,000; Final Portfolio = $311,175.'
+      },
+      {
+        title: 'Example 3: Daily Compounding Fixed-Income Fund',
+        scenario: '$50,000 initial investment with $0 monthly additions at 5.5% compounded daily for 10 years reaches $86,659 ($36,659 earned).'
+      }
+    ],
     whenToUse: [
       'Evaluating dividend reinvestment plans (DRIP)',
       'Comparing differences between monthly vs annual compounding frequencies',
@@ -1053,8 +1478,27 @@ export const CALCULATORS: CalculatorMeta[] = [
       'capital gain calculator'
     ],
     howItWorks: 'Enter your initial purchase cost and ending liquidation value, plus any interim cash flow (dividends or rental income). The calculator outputs net dollar profit and percentage return on investment.',
+    howToUse: [
+      'Enter the Initial Investment Cost (purchase price plus acquisition fees).',
+      'Enter the Ending Value or Sale Price when liquidated.',
+      'Add any Interim Cash Flow (such as dividends, interest, or net rental income received) to calculate Net Return, ROI %, and Capital Multiple.'
+    ],
     formula: 'Total Return = Final Value + Interim Cash Flow - Initial Investment\nROI % = (Total Return / Initial Investment) × 100\nCapital Multiple = (Final Value + Interim Cash Flow) / Initial Investment',
     example: 'You buy an asset for $50,000, receive $6,000 in dividends over the holding period, and sell it for $68,000: Total return = $68,000 + $6,000 - $50,000 = $24,000. ROI = 48.0% (1.48x multiple).',
+    examples: [
+      {
+        title: 'Example 1: Dividend Stock Sale with Interim Payouts',
+        scenario: 'Buy shares for $50,000, collect $6,000 in dividends, and sell for $68,000: Total Net Return = $24,000, ROI = 48.0%, and Capital Multiple = 1.48x.'
+      },
+      {
+        title: 'Example 2: Rental Property Exit Analysis',
+        scenario: 'Invest $120,000 cash into a property, earn $18,000 net rental cash flow, and sell for $156,000: Net Gain = $54,000, Total ROI = 45.0% (1.45x multiple).'
+      },
+      {
+        title: 'Example 3: Small Business Equipment Upgrade',
+        scenario: 'Spend $8,000 on equipment generating $12,000 in additional net cash flow with $2,000 salvage value: Total Return = $6,000, ROI = 75.0% (1.75x multiple).'
+      }
+    ],
     whenToUse: [
       'Calculating realized returns on sold stocks, bonds, or real estate',
       'Evaluating franchise or startup investment opportunities',

@@ -94,6 +94,23 @@ export function CalculatorPageTemplate({ calculator, onNavigate }: TemplateProps
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
           {calculator.howItWorks}
         </p>
+        {calculator.howToUse && calculator.howToUse.length > 0 && (
+          <div className="pt-2 space-y-2.5">
+            <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+              How to Use This Calculator
+            </h3>
+            <ol className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              {calculator.howToUse.map((step, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-semibold text-xs shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <span className="leading-relaxed">{step}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
       </section>
 
       {/* 7. Formula */}
@@ -121,15 +138,35 @@ export function CalculatorPageTemplate({ calculator, onNavigate }: TemplateProps
         )}
       </section>
 
-      {/* 8. Practical Example */}
-      <section aria-labelledby="example-heading" className="space-y-3 p-5 sm:p-6 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl">
-        <h3 id="example-heading" className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          Step-by-Step Example
-        </h3>
-        <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-          {calculator.example}
-        </p>
+      {/* 8. Practical Worked Examples */}
+      <section aria-labelledby="example-heading" className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <h2 id="example-heading" className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
+          <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+          Practical Worked Examples
+        </h2>
+        {calculator.examples && calculator.examples.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4">
+            {calculator.examples.map((ex, idx) => (
+              <div
+                key={idx}
+                className="p-5 sm:p-6 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2"
+              >
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                  {ex.title}
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                  {ex.scenario}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="p-5 sm:p-6 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+              {calculator.example}
+            </p>
+          </div>
+        )}
       </section>
 
       {/* 9. When to Use & 10. Important Limitations */}
