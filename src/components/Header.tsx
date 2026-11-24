@@ -24,9 +24,9 @@ export function Header({ currentPath, onNavigate, onOpenSearch, isDarkMode, onTo
     { name: 'Calculators', path: '/#all-calculators' },
     { name: 'Money', path: '/#everyday-money' },
     { name: 'Business', path: '/#business' },
-    { name: 'Salary', path: '/#salary-&-pay' },
-    { name: 'Loans', path: '/#loans-&-interest' },
-    { name: 'Investment', path: '/#investment-&-savings' },
+    { name: 'Salary', path: '/#salary---pay' },
+    { name: 'Loans', path: '/#loans---interest' },
+    { name: 'Investment', path: '/#investment---savings' },
   ];
 
   return (

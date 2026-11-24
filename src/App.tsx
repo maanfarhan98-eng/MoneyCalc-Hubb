@@ -70,16 +70,29 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Custom navigation handler
-  const handleNavigate = (path: string) => {
+  const normalizeRoutePath = (path: string): string => {
     if (path.includes('#')) {
       const [base, hash] = path.split('#');
+      const normalizedBase: string = normalizeRoutePath(base || '/');
+      return `${normalizedBase}#${hash}`;
+    }
+    const trimmed = path.replace(/^\/|\/$/g, '');
+    if (trimmed === '' || trimmed === 'index.html') return '/';
+    if (trimmed === 'privacy') return '/privacy-policy/';
+    return `/${trimmed}/`;
+  };
+
+  // Custom navigation handler
+  const handleNavigate = (path: string) => {
+    const targetPath = normalizeRoutePath(path);
+    if (targetPath.includes('#')) {
+      const [base, hash] = targetPath.split('#');
       const targetBase = base || '/';
       if (window.location.pathname !== targetBase) {
-        window.history.pushState(null, '', path);
+        window.history.pushState(null, '', targetPath);
         setCurrentPath(targetBase);
       } else {
-        window.history.pushState(null, '', path);
+        window.history.pushState(null, '', targetPath);
       }
       setTimeout(() => {
         const el = document.getElementById(hash);
@@ -90,15 +103,16 @@ export default function App() {
       return;
     }
 
-    if (window.location.pathname !== path) {
-      window.history.pushState(null, '', path);
-      setCurrentPath(path);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
+      setCurrentPath(targetPath);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   // Determine current page
-  const cleanPath = currentPath.replace(/^\/|\/$/g, '');
+  const rawCleanPath = currentPath.replace(/^\/|\/$/g, '');
+  const cleanPath = rawCleanPath === 'privacy' ? 'privacy-policy' : rawCleanPath;
 
   // 1. Check if Homepage
   const isHome = cleanPath === '' || cleanPath === 'index.html';

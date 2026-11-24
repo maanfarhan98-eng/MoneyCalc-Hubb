@@ -1,8 +1,13 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { CALCULATORS, CATEGORIES } from '../src/data/calculators.ts';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const BASE_URL = 'https://moneycalchub.online';
-const LASTMOD_DATE = '2026-11-20';
+const LASTMOD_DATE = '2026-11-24';
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -24,6 +29,12 @@ function replaceOrThrow(html, pattern, replacement, label) {
     throw new Error(`Expected HTML pattern not found during prerender: ${label}`);
   }
   return html.replace(pattern, () => replacement);
+}
+
+function ensureTrailingSlash(routePath) {
+  if (!routePath || routePath === '/') return '/';
+  const withLeading = routePath.startsWith('/') ? routePath : `/${routePath}`;
+  return withLeading.endsWith('/') ? withLeading : `${withLeading}/`;
 }
 
 function applyPageMetadata(template, { title, description, canonicalUrl, ogType, robots = 'index, follow', jsonLdSchemas = [] }) {
@@ -127,9 +138,9 @@ function renderHeader() {
         <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300" aria-label="Primary Navigation">
           <a href="/#everyday-money" class="hover:text-blue-600">Money</a>
           <a href="/#business" class="hover:text-blue-600">Business</a>
-          <a href="/#salary-&amp;-pay" class="hover:text-blue-600">Salary</a>
-          <a href="/#loans-&amp;-interest" class="hover:text-blue-600">Loans</a>
-          <a href="/#investment-&amp;-savings" class="hover:text-blue-600">Investment</a>
+          <a href="/#salary---pay" class="hover:text-blue-600">Salary</a>
+          <a href="/#loans---interest" class="hover:text-blue-600">Loans</a>
+          <a href="/#investment---savings" class="hover:text-blue-600">Investment</a>
         </nav>
       </div>
     </header>
@@ -162,7 +173,7 @@ function renderFooter() {
   `;
 }
 
-async function main() {
+function main() {
   const distDir = path.resolve(__dirname, '../dist');
   const publicDir = path.resolve(__dirname, '../public');
   const templatePath = path.join(distDir, 'index.html');
@@ -173,14 +184,12 @@ async function main() {
   }
 
   const template = fs.readFileSync(templatePath, 'utf8');
-
-  // Import TypeScript calculator definitions directly in Node 22+
-  const { CALCULATORS, CATEGORIES } = await import('../src/data/calculators.ts');
   console.log(`Loaded ${CALCULATORS.length} calculators and ${CATEGORIES.length} categories for pre-rendering.`);
 
-  // 1. Pre-render all calculator pages into dist/<slug>/index.html
+  // 1. Pre-render all calculator routes into dist/<slug>/index.html
   for (const calc of CALCULATORS) {
-    const canonicalUrl = `${BASE_URL}${calc.path}`;
+    const normalizedPath = ensureTrailingSlash(calc.path);
+    const canonicalUrl = `${BASE_URL}${normalizedPath}`;
     const categoryAnchorSlug = calc.category.toLowerCase().replace(/[^a-z0-9]/g, '-');
     const categoryAnchor = `/#${categoryAnchorSlug}`;
 
@@ -244,8 +253,9 @@ async function main() {
       .map(slug => {
         const rel = CALCULATORS.find(c => c.slug === slug);
         if (!rel) return '';
+        const relPath = ensureTrailingSlash(rel.path);
         return `
-          <a href="${escapeHtml(rel.path)}" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
+          <a href="${escapeHtml(relPath)}" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
             <div class="space-y-1 pr-3">
               <span class="font-semibold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors block">${escapeHtml(rel.h1)}</span>
               <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">${escapeHtml(rel.shortIntro)}</p>
@@ -276,7 +286,7 @@ async function main() {
     const examplesHtml = calc.examples && calc.examples.length > 0
       ? `
         <div class="grid grid-cols-1 gap-4">
-          ${calc.examples.map((ex, idx) => `
+          ${calc.examples.map(ex => `
             <div class="p-5 sm:p-6 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2">
               <h3 class="text-base font-bold text-slate-900 dark:text-white">${escapeHtml(ex.title)}</h3>
               <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">${escapeHtml(ex.scenario)}</p>
@@ -625,7 +635,40 @@ async function main() {
     console.log(`Pre-rendered legal: /${page.slug}/index.html`);
   }
 
-  // 3. Pre-render Homepage into dist/index.html
+  // 3. Pre-render 404 page into dist/404.html (so unknown routes return 404 with noindex instead of homepage HTML)
+  {
+    const notFoundBody = `
+      <div class="flex flex-col min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+        ${renderHeader()}
+        <main class="flex-1 max-w-2xl mx-auto px-4 sm:px-6 py-20 text-center space-y-6">
+          <div class="text-6xl font-bold font-mono text-emerald-600 dark:text-emerald-400">404</div>
+          <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Page Not Found</h1>
+          <p class="text-base text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
+            The page you are looking for does not exist or may have moved.
+          </p>
+          <div class="pt-4">
+            <a href="/" class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-xl transition-colors">
+              Back to Home
+            </a>
+          </div>
+        </main>
+        ${renderFooter()}
+      </div>
+    `;
+
+    let notFoundHtml = applyPageMetadata(template, {
+      title: 'Page Not Found — MoneyCalc Hub',
+      description: 'The calculator page you are looking for does not exist or may have moved.',
+      canonicalUrl: `${BASE_URL}/404/`,
+      ogType: 'website',
+      robots: 'noindex, nofollow'
+    });
+    notFoundHtml = replaceOrThrow(notFoundHtml, '<div id="root"></div>', `<div id="root">${notFoundBody}</div>`, '<div id="root"></div>');
+    fs.writeFileSync(path.join(distDir, '404.html'), notFoundHtml, 'utf8');
+    console.log('Pre-rendered 404 page: /404.html');
+  }
+
+  // 4. Pre-render Homepage into dist/index.html
   const homeCanonicalUrl = `${BASE_URL}/`;
   const homeTitle = 'MoneyCalc Hub — Free Money & Financial Calculators';
   const homeDescription = 'Simple Calculators. Clear Answers. Calculate percentages, discounts, profits, salaries, loans, interest, investments, and savings quickly and accurately.';
@@ -643,8 +686,9 @@ async function main() {
     .map(slug => {
       const calc = CALCULATORS.find(c => c.slug === slug);
       if (!calc) return '';
+      const calcPath = ensureTrailingSlash(calc.path);
       return `
-        <a href="${escapeHtml(calc.path)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
+        <a href="${escapeHtml(calcPath)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">${escapeHtml(calc.category)}</span>
@@ -666,18 +710,21 @@ async function main() {
     const anchor = cat.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
     const catCalcs = CALCULATORS.filter(c => c.category === cat.name);
     const cardsHtml = catCalcs
-      .map(calc => `
-        <a href="${escapeHtml(calc.path)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
-          <div class="space-y-2">
-            <h3 class="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">${escapeHtml(calc.h1)}</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">${escapeHtml(calc.shortIntro)}</p>
-          </div>
-          <div class="flex items-center gap-1 text-xs font-medium text-blue-600 pt-4 mt-2">
-            <span>Use tool</span>
-            <span>&rarr;</span>
-          </div>
-        </a>
-      `)
+      .map(calc => {
+        const calcPath = ensureTrailingSlash(calc.path);
+        return `
+          <a href="${escapeHtml(calcPath)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
+            <div class="space-y-2">
+              <h3 class="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">${escapeHtml(calc.h1)}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">${escapeHtml(calc.shortIntro)}</p>
+            </div>
+            <div class="flex items-center gap-1 text-xs font-medium text-blue-600 pt-4 mt-2">
+              <span>Use tool</span>
+              <span>&rarr;</span>
+            </div>
+          </a>
+        `;
+      })
       .join('');
 
     return `
@@ -822,11 +869,11 @@ async function main() {
   fs.writeFileSync(templatePath, homeHtml, 'utf8');
   console.log('Pre-rendered homepage: /index.html');
 
-  // 4. Generate synchronized sitemap.xml into both public/sitemap.xml and dist/sitemap.xml
+  // 5. Generate synchronized sitemap.xml into both public/sitemap.xml and dist/sitemap.xml
   const sitemapUrls = [
     { loc: `${BASE_URL}/`, changefreq: 'weekly', priority: '1.0' },
     ...CALCULATORS.map(c => ({
-      loc: `${BASE_URL}${c.path}`,
+      loc: `${BASE_URL}${ensureTrailingSlash(c.path)}`,
       changefreq: 'monthly',
       priority: c.popular ? '0.9' : '0.8'
     })),
@@ -855,11 +902,12 @@ async function main() {
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf8');
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
   console.log(`Generated sitemap.xml with ${sitemapUrls.length} canonical URLs.`);
-
-  console.log(`All ${sitemapUrls.length} static pages pre-rendered successfully!`);
+  console.log(`All ${sitemapUrls.length} indexable static pages + 404.html pre-rendered successfully!`);
 }
 
-main().catch((err) => {
+try {
+  main();
+} catch (err) {
   console.error('Prerender failed:', err);
   process.exit(1);
-});
+}
