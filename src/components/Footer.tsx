@@ -86,10 +86,10 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
               <li>
                 <a
-                  href="/percentage-calculator/"
+                  href="/percentage-calculator2"
                   onClick={(e) => {
                     e.preventDefault();
-                    onNavigate('/percentage-calculator/');
+                    onNavigate('/percentage-calculator2');
                   }}
                   className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer block"
                 >

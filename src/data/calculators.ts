@@ -89,9 +89,10 @@ export const CATEGORIES: { name: Category; description: string; icon: string }[]
 
 export const CALCULATORS: CalculatorMeta[] = [
   {
-    id: 'percentage-calculator',
-    slug: 'percentage-calculator',
-    path: '/percentage-calculator/',
+    id: 'percentage-calculator2',
+    slug: 'percentage-calculator2',
+    path: '/percentage-calculator2',
+    lastUpdated: '2026-11-24',
     title: 'Fast Percentage Calculator | Percent Change, Off & Difference',
     metaDescription: 'Calculate percentage increases, decreases, discounts, and differences instantly. Simple, fast mobile tool for quick math answers.',
     h1: 'Percentage Calculator',
@@ -208,7 +209,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Calculations assume a standard percentage discount. Bundled buy-one-get-one deals require per-item calculation.'
     ],
     relatedCalculators: [
-      'percentage-calculator',
+      'percentage-calculator2',
       'markup-calculator',
       'tip-calculator'
     ],
@@ -272,7 +273,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Does not account for uneven item consumption unless diners calculate individual subtotals beforehand.'
     ],
     relatedCalculators: [
-      'percentage-calculator',
+      'percentage-calculator2',
       'discount-calculator'
     ],
     popular: true,
@@ -397,7 +398,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Applies a uniform commission rate. Tiered or graduated structures (e.g. 5% on first $50k, 10% thereafter) require applying rates across segments.'
     ],
     relatedCalculators: [
-      'percentage-calculator',
+      'percentage-calculator2',
       'profit-calculator',
       'salary-calculator',
       'markup-calculator'
@@ -913,7 +914,7 @@ export const CALCULATORS: CalculatorMeta[] = [
     relatedCalculators: [
       'salary-calculator',
       'overtime-pay-calculator',
-      'percentage-calculator'
+      'percentage-calculator2'
     ],
     faq: [
       {

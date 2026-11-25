@@ -79,6 +79,9 @@ export default function App() {
     const trimmed = path.replace(/^\/|\/$/g, '');
     if (trimmed === '' || trimmed === 'index.html') return '/';
     if (trimmed === 'privacy') return '/privacy-policy/';
+    if (trimmed === 'percentage-calculator') return '/percentage-calculator2';
+    const matchedCalc = getCalculatorBySlug(trimmed);
+    if (matchedCalc) return matchedCalc.path;
     return `/${trimmed}/`;
   };
 
@@ -112,7 +115,12 @@ export default function App() {
 
   // Determine current page
   const rawCleanPath = currentPath.replace(/^\/|\/$/g, '');
-  const cleanPath = rawCleanPath === 'privacy' ? 'privacy-policy' : rawCleanPath;
+  const cleanPath =
+    rawCleanPath === 'privacy'
+      ? 'privacy-policy'
+      : rawCleanPath === 'percentage-calculator'
+        ? 'percentage-calculator2'
+        : rawCleanPath;
 
   // 1. Check if Homepage
   const isHome = cleanPath === '' || cleanPath === 'index.html';

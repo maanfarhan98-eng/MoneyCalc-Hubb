@@ -63,9 +63,11 @@ function validateCatalog(calculators) {
     if (!calc.slug || !calc.path || !calc.title || !calc.metaDescription || !calc.h1) {
       throw new Error(`Calculator entry missing required SEO fields: ${calc.id || calc.slug}`);
     }
-    const expectedPath = `/${calc.slug}/`;
+    const expectedPath = calc.slug === 'percentage-calculator2'
+      ? '/percentage-calculator2'
+      : `/${calc.slug}/`;
     if (calc.path !== expectedPath) {
-      throw new Error(`Calculator "${calc.slug}" path "${calc.path}" must equal "${expectedPath}" for trailing-slash canonical consistency.`);
+      throw new Error(`Calculator "${calc.slug}" path "${calc.path}" must equal "${expectedPath}".`);
     }
     if (slugs.has(calc.slug)) throw new Error(`Duplicate calculator slug: ${calc.slug}`);
     if (paths.has(calc.path)) throw new Error(`Duplicate calculator path: ${calc.path}`);
@@ -203,7 +205,7 @@ function renderFooter() {
       <div class="max-w-7xl mx-auto px-4 space-y-4">
         <div class="flex flex-wrap justify-center gap-4 text-slate-600 dark:text-slate-400">
           <a href="/" class="hover:text-blue-600">Home</a>
-          <a href="/percentage-calculator/" class="hover:text-blue-600">Percentage Calculator</a>
+          <a href="/percentage-calculator2" class="hover:text-blue-600">Percentage Calculator</a>
           <a href="/discount-calculator/" class="hover:text-blue-600">Discount Calculator</a>
           <a href="/loan-calculator/" class="hover:text-blue-600">Loan Calculator</a>
           <a href="/salary-calculator/" class="hover:text-blue-600">Salary Calculator</a>
@@ -239,9 +241,13 @@ function main() {
   const template = fs.readFileSync(templatePath, 'utf8');
   console.log(`Loaded ${CALCULATORS.length} calculators and ${CATEGORIES.length} categories for pre-rendering.`);
 
-  // 1. Pre-render all calculator routes into dist/<slug>/index.html
+  // Ensure no stale directory exists for migrated/slashless calculator routes
+  fs.rmSync(path.join(distDir, 'percentage-calculator'), { recursive: true, force: true });
+  fs.rmSync(path.join(distDir, 'percentage-calculator2'), { recursive: true, force: true });
+
+  // 1. Pre-render all calculator routes
   for (const calc of CALCULATORS) {
-    const normalizedPath = ensureTrailingSlash(calc.path);
+    const normalizedPath = calc.path.startsWith('/') ? calc.path : `/${calc.path}`;
     const canonicalUrl = `${BASE_URL}${normalizedPath}`;
     const categoryAnchorSlug = calc.category.toLowerCase().replace(/[^a-z0-9]/g, '-');
     const categoryAnchor = `/#${categoryAnchorSlug}`;
@@ -306,7 +312,7 @@ function main() {
       .map(slug => {
         const rel = CALCULATORS.find(c => c.slug === slug);
         if (!rel) return '';
-        const relPath = ensureTrailingSlash(rel.path);
+        const relPath = rel.path.startsWith('/') ? rel.path : `/${rel.path}`;
         return `
           <a href="${escapeHtml(relPath)}" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
             <div class="space-y-1 pr-3">
@@ -465,10 +471,17 @@ function main() {
     });
     html = replaceOrThrow(html, '<div id="root"></div>', `<div id="root">${preRenderedBody}</div>`, '<div id="root"></div>');
 
-    const outputDir = path.join(distDir, calc.slug);
-    fs.mkdirSync(outputDir, { recursive: true });
-    fs.writeFileSync(path.join(outputDir, 'index.html'), html, 'utf8');
-    console.log(`Pre-rendered: /${calc.slug}/index.html`);
+    if (normalizedPath.endsWith('/')) {
+      const outputDir = path.join(distDir, calc.slug);
+      fs.mkdirSync(outputDir, { recursive: true });
+      fs.writeFileSync(path.join(outputDir, 'index.html'), html, 'utf8');
+      console.log(`Pre-rendered: /${calc.slug}/index.html`);
+    } else {
+      const pagesDir = path.join(distDir, '_pages');
+      fs.mkdirSync(pagesDir, { recursive: true });
+      fs.writeFileSync(path.join(pagesDir, `${calc.slug}.html`), html, 'utf8');
+      console.log(`Pre-rendered (slashless rewrite target): /_pages/${calc.slug}.html -> ${normalizedPath}`);
+    }
   }
 
   // 2. Pre-render 5 Legal pages into dist/<slug>/index.html
@@ -730,7 +743,7 @@ function main() {
 
   const popularCardsHtml = popularCalculators
     .map(calc => {
-      const calcPath = ensureTrailingSlash(calc.path);
+      const calcPath = calc.path.startsWith('/') ? calc.path : `/${calc.path}`;
       return `
         <a href="${escapeHtml(calcPath)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
           <div class="space-y-2">
@@ -755,7 +768,7 @@ function main() {
     const catCalcs = CALCULATORS.filter(c => c.category === cat.name);
     const cardsHtml = catCalcs
       .map(calc => {
-        const calcPath = ensureTrailingSlash(calc.path);
+        const calcPath = calc.path.startsWith('/') ? calc.path : `/${calc.path}`;
         return `
           <a href="${escapeHtml(calcPath)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
             <div class="space-y-2">
@@ -906,7 +919,7 @@ function main() {
       priority: '1.0'
     },
     ...CALCULATORS.map(c => {
-      const loc = `${BASE_URL}${ensureTrailingSlash(c.path)}`;
+      const loc = `${BASE_URL}${c.path.startsWith('/') ? c.path : `/${c.path}`}`;
       return {
         loc,
         lastmod: resolveLastmod(loc, c.lastUpdated),

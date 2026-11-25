@@ -3,17 +3,172 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "trailingSlash": true,
   "redirects": [
+    {
+      "source": "/percentage-calculator/",
+      "destination": "/percentage-calculator2",
+      "statusCode": 301
+    },
+    {
+      "source": "/percentage-calculator",
+      "destination": "/percentage-calculator2",
+      "statusCode": 301
+    },
+    {
+      "source": "/percentage-calculator2/",
+      "destination": "/percentage-calculator2",
+      "statusCode": 301
+    },
     {
       "source": "/privacy",
       "destination": "/privacy-policy/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/privacy/",
       "destination": "/privacy-policy/",
-      "permanent": true
+      "statusCode": 301
+    },
+    {
+      "source": "/discount-calculator",
+      "destination": "/discount-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/tip-calculator",
+      "destination": "/tip-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/age-calculator",
+      "destination": "/age-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/commission-calculator",
+      "destination": "/commission-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/markup-calculator",
+      "destination": "/markup-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/profit-calculator",
+      "destination": "/profit-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/profit-margin-calculator",
+      "destination": "/profit-margin-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/break-even-calculator",
+      "destination": "/break-even-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/roi-calculator",
+      "destination": "/roi-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/salary-calculator",
+      "destination": "/salary-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/overtime-pay-calculator",
+      "destination": "/overtime-pay-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/pay-raise-calculator",
+      "destination": "/pay-raise-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/loan-calculator",
+      "destination": "/loan-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/simple-interest-calculator",
+      "destination": "/simple-interest-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/compound-interest-calculator",
+      "destination": "/compound-interest-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/monthly-payment-calculator",
+      "destination": "/monthly-payment-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/interest-rate-calculator",
+      "destination": "/interest-rate-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/loan-payoff-calculator",
+      "destination": "/loan-payoff-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/investment-calculator",
+      "destination": "/investment-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/savings-calculator",
+      "destination": "/savings-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/compound-interest-investment-calculator",
+      "destination": "/compound-interest-investment-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/return-on-investment-calculator",
+      "destination": "/return-on-investment-calculator/",
+      "statusCode": 301
+    },
+    {
+      "source": "/about",
+      "destination": "/about/",
+      "statusCode": 301
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/",
+      "statusCode": 301
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy-policy/",
+      "statusCode": 301
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms/",
+      "statusCode": 301
+    },
+    {
+      "source": "/disclaimer",
+      "destination": "/disclaimer/",
+      "statusCode": 301
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/percentage-calculator2",
+      "destination": "/_pages/percentage-calculator2.html"
     }
   ],
   "headers": [

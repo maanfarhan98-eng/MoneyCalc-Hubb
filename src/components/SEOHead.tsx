@@ -61,7 +61,7 @@ export function SEOHead({
     // Canonical production origin
     const origin = 'https://moneycalchub.online';
     const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
-    const normalizedPath = cleanPath === '/' ? '/' : cleanPath.endsWith('/') ? cleanPath : `${cleanPath}/`;
+    const normalizedPath = cleanPath === '/' ? '/' : cleanPath;
     const fullCanonicalUrl = `${origin}${normalizedPath}`;
     setMeta('property', 'og:url', fullCanonicalUrl);
     setMeta('property', 'og:site_name', 'MoneyCalc Hub');

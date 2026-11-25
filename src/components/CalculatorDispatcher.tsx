@@ -29,7 +29,7 @@ interface DispatcherProps {
 
 export function CalculatorDispatcher({ slug }: DispatcherProps) {
   switch (slug) {
-    case 'percentage-calculator':
+    case 'percentage-calculator2':
       return <PercentageCalculator />;
     case 'discount-calculator':
       return <DiscountCalculator />;
