@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { CALCULATORS, CATEGORIES } from '../src/data/calculators.ts';
+import { CALCULATORS, CATEGORIES, HOMEPAGE_FAQS } from '../src/data/calculators.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const BASE_URL = 'https://moneycalchub.online';
-const LASTMOD_DATE = '2026-11-24';
+const TODAY_ISO = new Date().toISOString().slice(0, 10);
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -35,6 +35,56 @@ function ensureTrailingSlash(routePath) {
   if (!routePath || routePath === '/') return '/';
   const withLeading = routePath.startsWith('/') ? routePath : `/${routePath}`;
   return withLeading.endsWith('/') ? withLeading : `${withLeading}/`;
+}
+
+function readExistingSitemapLastmods(sitemapPath) {
+  const map = new Map();
+  if (!fs.existsSync(sitemapPath)) return map;
+  const xml = fs.readFileSync(sitemapPath, 'utf8');
+  const urlBlocks = xml.matchAll(/<url>([\s\S]*?)<\/url>/g);
+  for (const match of urlBlocks) {
+    const loc = match[1].match(/<loc>([^<]+)<\/loc>/)?.[1]?.trim();
+    const lastmod = match[1].match(/<lastmod>([^<]+)<\/lastmod>/)?.[1]?.trim();
+    if (loc && lastmod) {
+      map.set(loc, lastmod);
+    }
+  }
+  return map;
+}
+
+function validateCatalog(calculators) {
+  const slugs = new Set();
+  const paths = new Set();
+  const titles = new Set();
+  const descriptions = new Set();
+  const h1s = new Set();
+
+  for (const calc of calculators) {
+    if (!calc.slug || !calc.path || !calc.title || !calc.metaDescription || !calc.h1) {
+      throw new Error(`Calculator entry missing required SEO fields: ${calc.id || calc.slug}`);
+    }
+    const expectedPath = `/${calc.slug}/`;
+    if (calc.path !== expectedPath) {
+      throw new Error(`Calculator "${calc.slug}" path "${calc.path}" must equal "${expectedPath}" for trailing-slash canonical consistency.`);
+    }
+    if (slugs.has(calc.slug)) throw new Error(`Duplicate calculator slug: ${calc.slug}`);
+    if (paths.has(calc.path)) throw new Error(`Duplicate calculator path: ${calc.path}`);
+    if (titles.has(calc.title)) throw new Error(`Duplicate calculator SEO title: ${calc.title}`);
+    if (descriptions.has(calc.metaDescription)) throw new Error(`Duplicate calculator meta description on ${calc.slug}`);
+    if (h1s.has(calc.h1)) throw new Error(`Duplicate calculator H1: ${calc.h1}`);
+
+    slugs.add(calc.slug);
+    paths.add(calc.path);
+    titles.add(calc.title);
+    descriptions.add(calc.metaDescription);
+    h1s.add(calc.h1);
+
+    for (const relSlug of calc.relatedCalculators || []) {
+      if (!calculators.some(c => c.slug === relSlug)) {
+        throw new Error(`Broken relatedCalculators reference "${relSlug}" on "${calc.slug}".`);
+      }
+    }
+  }
 }
 
 function applyPageMetadata(template, { title, description, canonicalUrl, ogType, robots = 'index, follow', jsonLdSchemas = [] }) {
@@ -177,12 +227,15 @@ function main() {
   const distDir = path.resolve(__dirname, '../dist');
   const publicDir = path.resolve(__dirname, '../public');
   const templatePath = path.join(distDir, 'index.html');
+  const publicSitemapPath = path.join(publicDir, 'sitemap.xml');
 
   if (!fs.existsSync(templatePath)) {
     console.error('dist/index.html not found! Run vite build first.');
     process.exit(1);
   }
 
+  validateCatalog(CALCULATORS);
+  const existingLastmods = readExistingSitemapLastmods(publicSitemapPath);
   const template = fs.readFileSync(templatePath, 'utf8');
   console.log(`Loaded ${CALCULATORS.length} calculators and ${CATEGORIES.length} categories for pre-rendering.`);
 
@@ -446,7 +499,7 @@ function main() {
     {
       slug: 'contact',
       title: 'Contact Us — MoneyCalc Hub',
-      desc: 'Have feedback, a question, or a new calculator suggestion? Reach out to the MoneyCalc Hub team.',
+      desc: 'Have feedback, a calculation question, or a new financial calculator suggestion? Contact the MoneyCalc Hub editorial team online.',
       h1: 'Contact MoneyCalc Hub',
       subtitle: 'Have a question, detected an issue with a calculation, or want to suggest a new tool? We value your feedback.',
       sections: [
@@ -494,7 +547,7 @@ function main() {
     {
       slug: 'terms',
       title: 'Terms of Service — MoneyCalc Hub',
-      desc: 'Read the terms of service governing use of MoneyCalc Hub and its free online financial calculation tools.',
+      desc: 'Read the MoneyCalc Hub Terms of Service covering educational calculator usage, warranty disclaimers, and liability limits.',
       h1: 'Terms of Service',
       subtitle: 'Last updated: September 26, 2026',
       sections: [
@@ -635,7 +688,7 @@ function main() {
     console.log(`Pre-rendered legal: /${page.slug}/index.html`);
   }
 
-  // 3. Pre-render 404 page into dist/404.html (so unknown routes return 404 with noindex instead of homepage HTML)
+  // 3. Pre-render 404 page into dist/404.html (so unknown routes return HTTP 404 + noindex)
   {
     const notFoundBody = `
       <div class="flex flex-col min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -673,19 +726,10 @@ function main() {
   const homeTitle = 'MoneyCalc Hub — Free Money & Financial Calculators';
   const homeDescription = 'Simple Calculators. Clear Answers. Calculate percentages, discounts, profits, salaries, loans, interest, investments, and savings quickly and accurately.';
 
-  const popularSlugs = [
-    'percentage-calculator',
-    'profit-margin-calculator',
-    'salary-calculator',
-    'loan-calculator',
-    'compound-interest-calculator',
-    'savings-calculator'
-  ];
+  const popularCalculators = CALCULATORS.filter(c => c.popular);
 
-  const popularCardsHtml = popularSlugs
-    .map(slug => {
-      const calc = CALCULATORS.find(c => c.slug === slug);
-      if (!calc) return '';
+  const popularCardsHtml = popularCalculators
+    .map(calc => {
       const calcPath = ensureTrailingSlash(calc.path);
       return `
         <a href="${escapeHtml(calcPath)}" class="flex flex-col justify-between p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-xs transition-all text-left group">
@@ -740,25 +784,6 @@ function main() {
     `;
   }).join('');
 
-  const homeFaqs = [
-    {
-      question: 'Are all calculators on MoneyCalc Hub completely free to use?',
-      answer: 'Yes, 100% free. There are no paywalls, registration gates, credit card requirements, or locked features. Every calculator is freely available to individuals, small business owners, and professionals.'
-    },
-    {
-      question: 'Is my personal or financial information stored or tracked?',
-      answer: 'No. All calculations are executed client-side directly within your browser. None of your entered numbers, salaries, or financial figures are sent to or stored on any remote server.'
-    },
-    {
-      question: 'How accurate are the financial calculation formulas?',
-      answer: 'Our calculators employ standard mathematical formulas and verified financial equations (including standard monthly amortization annuity equations, compound interest models, and bisection solvers for APR). However, results are estimates for planning purposes and do not replace certified financial or legal counsel.'
-    },
-    {
-      question: 'Can I use MoneyCalc Hub on mobile phones and tablets?',
-      answer: 'Yes. The entire platform is built with a responsive mobile-first architecture, large touch-friendly buttons, and zero horizontal scrolling on Android and iOS devices.'
-    }
-  ];
-
   const homeBody = `
     <div class="flex flex-col min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       ${renderHeader()}
@@ -810,7 +835,7 @@ function main() {
         <section class="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
           <h2 class="text-2xl font-bold text-slate-900 dark:text-white text-center">Frequently Asked Questions</h2>
           <div class="space-y-3">
-            ${homeFaqs.map((faq, idx) => `
+            ${HOMEPAGE_FAQS.map((faq, idx) => `
               <details class="border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 p-4" ${idx === 0 ? 'open' : ''}>
                 <summary class="font-semibold text-sm text-slate-900 dark:text-white cursor-pointer hover:text-blue-600">${escapeHtml(faq.question)}</summary>
                 <div class="mt-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">${escapeHtml(faq.answer)}</div>
@@ -846,7 +871,7 @@ function main() {
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: homeFaqs.map(item => ({
+      mainEntity: HOMEPAGE_FAQS.map(item => ({
         '@type': 'Question',
         name: item.question,
         acceptedAnswer: {
@@ -870,18 +895,34 @@ function main() {
   console.log('Pre-rendered homepage: /index.html');
 
   // 5. Generate synchronized sitemap.xml into both public/sitemap.xml and dist/sitemap.xml
+  // Preserve existing lastmod unless explicitly updated or newly discovered
+  const resolveLastmod = (loc, explicitDate) => explicitDate || existingLastmods.get(loc) || TODAY_ISO;
+
   const sitemapUrls = [
-    { loc: `${BASE_URL}/`, changefreq: 'weekly', priority: '1.0' },
-    ...CALCULATORS.map(c => ({
-      loc: `${BASE_URL}${ensureTrailingSlash(c.path)}`,
-      changefreq: 'monthly',
-      priority: c.popular ? '0.9' : '0.8'
-    })),
-    ...legalPages.map(p => ({
-      loc: `${BASE_URL}/${p.slug}/`,
-      changefreq: 'yearly',
-      priority: p.slug === 'privacy-policy' || p.slug === 'terms' ? '0.4' : '0.5'
-    }))
+    {
+      loc: `${BASE_URL}/`,
+      lastmod: resolveLastmod(`${BASE_URL}/`),
+      changefreq: 'weekly',
+      priority: '1.0'
+    },
+    ...CALCULATORS.map(c => {
+      const loc = `${BASE_URL}${ensureTrailingSlash(c.path)}`;
+      return {
+        loc,
+        lastmod: resolveLastmod(loc, c.lastUpdated),
+        changefreq: 'monthly',
+        priority: c.popular ? '0.9' : '0.8'
+      };
+    }),
+    ...legalPages.map(p => {
+      const loc = `${BASE_URL}/${p.slug}/`;
+      return {
+        loc,
+        lastmod: resolveLastmod(loc),
+        changefreq: 'yearly',
+        priority: p.slug === 'privacy-policy' || p.slug === 'terms' ? '0.4' : '0.5'
+      };
+    })
   ];
 
   const sitemapXml = [
@@ -890,7 +931,7 @@ function main() {
     ...sitemapUrls.map(u => [
       '  <url>',
       `    <loc>${escapeHtml(u.loc)}</loc>`,
-      `    <lastmod>${LASTMOD_DATE}</lastmod>`,
+      `    <lastmod>${escapeHtml(u.lastmod)}</lastmod>`,
       `    <changefreq>${u.changefreq}</changefreq>`,
       `    <priority>${u.priority}</priority>`,
       '  </url>'
@@ -899,7 +940,7 @@ function main() {
     ''
   ].join('\n');
 
-  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf8');
+  fs.writeFileSync(publicSitemapPath, sitemapXml, 'utf8');
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
   console.log(`Generated sitemap.xml with ${sitemapUrls.length} canonical URLs.`);
   console.log(`All ${sitemapUrls.length} indexable static pages + 404.html pre-rendered successfully!`);

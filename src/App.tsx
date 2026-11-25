@@ -141,7 +141,7 @@ export default function App() {
               title="MoneyCalc Hub — Free Money & Financial Calculators"
               description="Simple Calculators. Clear Answers. Calculate percentages, discounts, profits, salaries, loans, interest, investments, and savings quickly and accurately."
               canonicalPath="/"
-              isLegalOrHome={true}
+              pageType="home"
             />
             <HomePage
               onNavigate={handleNavigate}
@@ -157,6 +157,7 @@ export default function App() {
               description={calculator.metaDescription}
               canonicalPath={calculator.path}
               calculator={calculator}
+              pageType="calculator"
             />
             <CalculatorPageTemplate
               calculator={calculator}

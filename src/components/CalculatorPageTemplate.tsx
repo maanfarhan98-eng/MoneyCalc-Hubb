@@ -260,11 +260,15 @@ export function CalculatorPageTemplate({ calculator, onNavigate }: TemplateProps
                       {isOpen ? '−' : '+'}
                     </span>
                   </button>
-                  {isOpen && (
-                    <div className="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">
-                      {item.answer}
-                    </div>
-                  )}
+                  <div
+                    className={
+                      isOpen
+                        ? 'px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3'
+                        : 'hidden'
+                    }
+                  >
+                    {item.answer}
+                  </div>
                 </div>
               );
             })}

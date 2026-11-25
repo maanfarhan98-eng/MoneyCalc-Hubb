@@ -26,7 +26,8 @@ export function LegalPage({ page, onNavigate }: LegalPageProps) {
             title="About Us — MoneyCalc Hub"
             description="Learn about MoneyCalc Hub's mission to provide fast, transparent, and accurate financial and mathematical calculators without clutter."
             canonicalPath="/about/"
-            isLegalOrHome={true}
+            pageType="legal"
+            pageName="About MoneyCalc Hub"
           />
           <header className="space-y-3">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -57,9 +58,10 @@ export function LegalPage({ page, onNavigate }: LegalPageProps) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
           <SEOHead
             title="Contact Us — MoneyCalc Hub"
-            description="Have feedback, a question, or a new calculator suggestion? Reach out to the MoneyCalc Hub team."
+            description="Have feedback, a calculation question, or a new financial calculator suggestion? Contact the MoneyCalc Hub editorial team online."
             canonicalPath="/contact/"
-            isLegalOrHome={true}
+            pageType="legal"
+            pageName="Contact MoneyCalc Hub"
           />
           <header className="space-y-3">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -157,7 +159,8 @@ export function LegalPage({ page, onNavigate }: LegalPageProps) {
             title="Privacy Policy — MoneyCalc Hub"
             description="Our privacy policy explains how MoneyCalc Hub protects user data by running all financial calculations locally in your browser."
             canonicalPath="/privacy-policy/"
-            isLegalOrHome={true}
+            pageType="legal"
+            pageName="Privacy Policy"
           />
           <header className="space-y-3">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -193,9 +196,10 @@ export function LegalPage({ page, onNavigate }: LegalPageProps) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
           <SEOHead
             title="Terms of Service — MoneyCalc Hub"
-            description="Read the terms of service governing use of MoneyCalc Hub and its free online financial calculation tools."
+            description="Read the MoneyCalc Hub Terms of Service covering educational calculator usage, warranty disclaimers, and liability limits."
             canonicalPath="/terms/"
-            isLegalOrHome={true}
+            pageType="legal"
+            pageName="Terms of Service"
           />
           <header className="space-y-3">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
@@ -233,7 +237,8 @@ export function LegalPage({ page, onNavigate }: LegalPageProps) {
             title="Financial Disclaimer — MoneyCalc Hub"
             description="Important disclosure: MoneyCalc Hub calculations are estimates and do not constitute personalized financial, tax, or legal advice."
             canonicalPath="/disclaimer/"
-            isLegalOrHome={true}
+            pageType="legal"
+            pageName="Financial Disclaimer"
           />
           <header className="space-y-3">
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">

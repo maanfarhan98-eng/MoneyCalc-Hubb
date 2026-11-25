@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, ArrowRight, CheckCircle2, Calculator, Percent, Briefcase, Wallet, Landmark, TrendingUp, HelpCircle } from 'lucide-react';
-import { CALCULATORS, CATEGORIES, Category, CalculatorMeta } from '../data/calculators';
+import { CALCULATORS, CATEGORIES, HOMEPAGE_FAQS, Category, CalculatorMeta } from '../data/calculators';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -43,24 +43,7 @@ export function HomePage({ onNavigate, onOpenSearch }: HomePageProps) {
       )
     : null;
 
-  const homepageFaqs = [
-    {
-      question: 'Are all calculators on MoneyCalc Hub completely free to use?',
-      answer: 'Yes, 100% free. There are no paywalls, registration gates, credit card requirements, or locked features. Every calculator is freely available to individuals, small business owners, and professionals.'
-    },
-    {
-      question: 'Is my personal or financial information stored or tracked?',
-      answer: 'No. All calculations are executed client-side directly within your browser. None of your entered numbers, salaries, or financial figures are sent to or stored on any remote server.'
-    },
-    {
-      question: 'How accurate are the financial calculation formulas?',
-      answer: 'Our calculators employ standard mathematical formulas and verified financial equations (including standard monthly amortization annuity equations, compound interest models, and bisection solvers for APR). However, results are estimates for planning purposes and do not replace certified financial or legal counsel.'
-    },
-    {
-      question: 'Can I use MoneyCalc Hub on mobile phones and tablets?',
-      answer: 'Yes. The entire platform is built with a responsive mobile-first architecture, large touch-friendly buttons, and zero horizontal scrolling on Android and iOS devices.'
-    }
-  ];
+  const homepageFaqs = HOMEPAGE_FAQS;
 
   return (
     <div className="space-y-16 py-8 sm:py-12">
@@ -345,11 +328,15 @@ export function HomePage({ onNavigate, onOpenSearch }: HomePageProps) {
                     {isOpen ? '−' : '+'}
                   </span>
                 </button>
-                {isOpen && (
-                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3">
-                    {faq.answer}
-                  </div>
-                )}
+                <div
+                  className={
+                    isOpen
+                      ? 'px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 pt-3'
+                      : 'hidden'
+                  }
+                >
+                  {faq.answer}
+                </div>
               </div>
             );
           })}

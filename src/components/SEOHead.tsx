@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import { CalculatorMeta } from '../data/calculators';
+import { CalculatorMeta, HOMEPAGE_FAQS } from '../data/calculators';
+
+export type SEOPageType = 'home' | 'calculator' | 'legal' | 'notFound';
 
 interface SEOProps {
   title: string;
@@ -7,10 +9,31 @@ interface SEOProps {
   canonicalPath: string;
   calculator?: CalculatorMeta;
   isLegalOrHome?: boolean;
+  pageType?: SEOPageType;
   robots?: string;
+  pageName?: string;
 }
 
-export function SEOHead({ title, description, canonicalPath, calculator, isLegalOrHome, robots = 'index, follow' }: SEOProps) {
+export function SEOHead({
+  title,
+  description,
+  canonicalPath,
+  calculator,
+  isLegalOrHome,
+  pageType,
+  robots = 'index, follow',
+  pageName,
+}: SEOProps) {
+  const resolvedPageType: SEOPageType =
+    pageType ??
+    (robots.includes('noindex')
+      ? 'notFound'
+      : calculator
+        ? 'calculator'
+        : isLegalOrHome && canonicalPath !== '/'
+          ? 'legal'
+          : 'home');
+
   useEffect(() => {
     // 1. Update Title
     document.title = title;
@@ -33,11 +56,13 @@ export function SEOHead({ title, description, canonicalPath, calculator, isLegal
     // OpenGraph
     setMeta('property', 'og:title', title);
     setMeta('property', 'og:description', description);
-    setMeta('property', 'og:type', isLegalOrHome ? 'website' : 'article');
+    setMeta('property', 'og:type', resolvedPageType === 'calculator' ? 'article' : 'website');
+
     // Canonical production origin
     const origin = 'https://moneycalchub.online';
     const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
-    const fullCanonicalUrl = `${origin}${cleanPath}`;
+    const normalizedPath = cleanPath === '/' ? '/' : cleanPath.endsWith('/') ? cleanPath : `${cleanPath}/`;
+    const fullCanonicalUrl = `${origin}${normalizedPath}`;
     setMeta('property', 'og:url', fullCanonicalUrl);
     setMeta('property', 'og:site_name', 'MoneyCalc Hub');
 
@@ -55,74 +80,133 @@ export function SEOHead({ title, description, canonicalPath, calculator, isLegal
     }
     link.setAttribute('href', fullCanonicalUrl);
 
-    // Schema.org JSON-LD scripts
-    // Remove existing dynamic jsonld scripts
+    // Schema.org JSON-LD scripts (synchronized with static prerender output)
     const oldScripts = document.querySelectorAll('script[data-seo-jsonld]');
     oldScripts.forEach(s => s.remove());
 
     const schemas: object[] = [];
 
-    // WebApplication schema
-    schemas.push({
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      'name': calculator ? calculator.h1 : 'MoneyCalc Hub',
-      'url': fullCanonicalUrl,
-      'applicationCategory': 'FinanceApplication',
-      'operatingSystem': 'All',
-      'description': description,
-      'offers': {
-        '@type': 'Offer',
-        'price': '0',
-        'priceCurrency': 'USD'
-      }
-    });
-
-    // BreadcrumbList schema
-    if (calculator) {
-      schemas.push({
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        'itemListElement': [
-          {
-            '@type': 'ListItem',
-            'position': 1,
-            'name': 'Home',
-            'item': `${origin}/`
+    if (resolvedPageType === 'home') {
+      schemas.push(
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'MoneyCalc Hub',
+          url: fullCanonicalUrl,
+          description,
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${fullCanonicalUrl}?q={search_term_string}`,
+            'query-input': 'required name=search_term_string',
           },
-          {
-            '@type': 'ListItem',
-            'position': 2,
-            'name': calculator.category,
-            'item': `${origin}/#${calculator.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'MoneyCalc Hub',
+          url: fullCanonicalUrl,
+          logo: `${origin}/favicon-192x192.png`,
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: HOMEPAGE_FAQS.map(item => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        }
+      );
+    } else if (resolvedPageType === 'calculator' && calculator) {
+      schemas.push(
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          name: calculator.h1,
+          url: fullCanonicalUrl,
+          applicationCategory: 'FinanceApplication',
+          operatingSystem: 'All',
+          description,
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
           },
-          {
-            '@type': 'ListItem',
-            'position': 3,
-            'name': calculator.h1,
-            'item': fullCanonicalUrl
-          }
-        ]
-      });
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: `${origin}/`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: calculator.category,
+              item: `${origin}/#${calculator.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: calculator.h1,
+              item: fullCanonicalUrl,
+            },
+          ],
+        }
+      );
 
-      // FAQPage schema
       if (calculator.faq && calculator.faq.length > 0) {
         schemas.push({
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
-          'mainEntity': calculator.faq.map(item => ({
+          mainEntity: calculator.faq.map(item => ({
             '@type': 'Question',
-            'name': item.question,
-            'acceptedAnswer': {
+            name: item.question,
+            acceptedAnswer: {
               '@type': 'Answer',
-              'text': item.answer
-            }
-          }))
+              text: item.answer,
+            },
+          })),
         });
       }
+    } else if (resolvedPageType === 'legal') {
+      const legalName = pageName || title.replace(/\s+—\s+MoneyCalc Hub$/, '');
+      schemas.push(
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: legalName,
+          url: fullCanonicalUrl,
+          description,
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: `${origin}/`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: legalName,
+              item: fullCanonicalUrl,
+            },
+          ],
+        }
+      );
     }
 
-    // Append new JSON-LD scripts
     schemas.forEach(schemaData => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
@@ -132,11 +216,10 @@ export function SEOHead({ title, description, canonicalPath, calculator, isLegal
     });
 
     return () => {
-      // Cleanup on unmount
       const cleanupScripts = document.querySelectorAll('script[data-seo-jsonld]');
       cleanupScripts.forEach(s => s.remove());
     };
-  }, [title, description, canonicalPath, calculator, isLegalOrHome, robots]);
+  }, [title, description, canonicalPath, calculator, resolvedPageType, robots, pageName]);
 
   return null;
 }

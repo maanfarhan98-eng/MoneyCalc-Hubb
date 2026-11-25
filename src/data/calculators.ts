@@ -37,7 +37,27 @@ export interface CalculatorMeta {
   relatedCalculators: string[]; // slugs
   faq: CalculatorFAQ[];
   popular?: boolean;
+  lastUpdated?: string;
 }
+
+export const HOMEPAGE_FAQS: CalculatorFAQ[] = [
+  {
+    question: 'Are all calculators on MoneyCalc Hub completely free to use?',
+    answer: 'Yes, 100% free. There are no paywalls, registration gates, credit card requirements, or locked features. Every calculator is freely available to individuals, small business owners, and professionals.'
+  },
+  {
+    question: 'Is my personal or financial information stored or tracked?',
+    answer: 'No. All calculations are executed client-side directly within your browser. None of your entered numbers, salaries, or financial figures are sent to or stored on any remote server.'
+  },
+  {
+    question: 'How accurate are the financial calculation formulas?',
+    answer: 'Our calculators employ standard mathematical formulas and verified financial equations (including standard monthly amortization annuity equations, compound interest models, and bisection solvers for APR). However, results are estimates for planning purposes and do not replace certified financial or legal counsel.'
+  },
+  {
+    question: 'Can I use MoneyCalc Hub on mobile phones and tablets?',
+    answer: 'Yes. The entire platform is built with a responsive mobile-first architecture, large touch-friendly buttons, and zero horizontal scrolling on Android and iOS devices.'
+  }
+];
 
 export const CATEGORIES: { name: Category; description: string; icon: string }[] = [
   {
@@ -163,6 +183,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Optionally add local sales tax (%) or a stacked extra coupon discount (%) to view your exact checkout total.'
     ],
     formula: 'Discount Amount = Original Price × (Discount % / 100)\nSale Price = Original Price - Discount Amount\nExtra Discount Price = Sale Price × (1 - Extra Discount % / 100)\nFinal Price with Tax = Discounted Price × (1 + Tax % / 100)',
+    formulaExplanation: 'Sequential discounts apply multiplicatively to the already-reduced price rather than adding directly to the primary discount percentage.',
     example: 'A jacket costs $120.00 with a 25% discount and 8% sales tax. Discount is $120 × 0.25 = $30.00. Sale price is $90.00. With 8% tax ($7.20), final price is $97.20.',
     examples: [
       {
@@ -226,6 +247,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Adjust the number of people splitting the check and optionally toggle round-up to see each diner’s exact share.'
     ],
     formula: 'Tip Amount = Bill Subtotal × (Tip % / 100)\nTotal Bill = Bill Subtotal + Tip Amount\nShare per Person = Total Bill / Number of People',
+    formulaExplanation: 'Dividing the combined subtotal and tip equally across all guests yields each person’s exact share before any optional rounding.',
     example: 'A dinner bill is $85.00. At an 18% gratuity rate with 3 diners: Tip is $85.00 × 0.18 = $15.30. Total is $100.30. Each guest owes $33.43.',
     examples: [
       {
@@ -288,6 +310,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'View exact chronological age in years, months, days, total weeks, total days lived, and days until the next birthday.'
     ],
     formula: 'Exact Age = Target Date - Date of Birth (evaluated in calendar years, whole months, and remaining days).',
+    formulaExplanation: 'Elapsed months and remaining days adjust automatically for 28-, 29-, 30-, and 31-day Gregorian calendar months as well as leap years.',
     example: 'Born on March 15, 1995 evaluated on September 26, 2026: The age is exactly 31 years, 6 months, and 11 days.',
     examples: [
       {
@@ -349,6 +372,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Optionally add your fixed base salary for the pay period to see combined gross earnings.'
     ],
     formula: 'Commission Earned = Total Sales Volume × (Commission Rate % / 100)\nTotal Payout = Base Salary + Commission Earned',
+    formulaExplanation: 'Dividing Total Payout by Total Sales Volume gives the effective total compensation rate when combining fixed base pay with variable commission.',
     example: 'A sales consultant sells $140,000 worth of merchandise at a 6.5% commission rate with a $2,500 monthly base salary: Commission = $140,000 × 0.065 = $9,100. Total payout = $11,600.',
     examples: [
       {
@@ -412,6 +436,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Review the recommended selling price, dollar profit per unit, and equivalent profit margin %.'
     ],
     formula: 'Selling Price = Cost × (1 + Markup % / 100)\nMarkup % = ((Selling Price - Cost) / Cost) × 100\nProfit Margin % = ((Selling Price - Cost) / Selling Price) × 100',
+    formulaExplanation: 'Markup divides gross profit by unit cost, whereas profit margin divides the exact same gross profit by the final selling price.',
     example: 'An item costs $40.00 wholesale and you apply a 60% markup: Markup amount = $40 × 0.60 = $24.00. Selling price = $64.00. The corresponding profit margin is ($24 / $64) = 37.5%.',
     examples: [
       {
@@ -475,6 +500,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter any additional Operating Expenses (rent, software, marketing) to inspect both Gross Profit and Net Profit.'
     ],
     formula: 'Profit = Total Revenue - Total Costs\nProfit Margin % = (Profit / Total Revenue) × 100\nProfit Markup % = (Profit / Total Costs) × 100',
+    formulaExplanation: 'Total Costs combine direct cost of goods sold (COGS) and operating expenses so you can measure both gross profitability and net operating margin.',
     example: 'A business generates $50,000 in monthly sales with $32,000 in total expenses: Profit = $50,000 - $32,000 = $18,000. Profit margin is 36%, and profit percentage on cost is 56.25%.',
     examples: [
       {
@@ -539,6 +565,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Review the calculated Profit Margin %, gross dollar profit, and equivalent Markup %.'
     ],
     formula: 'Gross Margin % = ((Revenue - Cost) / Revenue) × 100\nSelling Price = Cost / (1 - (Target Margin % / 100))\nGross Profit = Revenue - Cost',
+    formulaExplanation: 'Dividing cost by (1 - Target Margin %) ensures the target percentage is retained out of the final revenue rather than added strictly to cost.',
     example: 'If an item costs $60 to produce and you sell it for $100: Gross Profit is $40. Profit margin is ($40 / $100) = 40.0%. The equivalent markup on cost is ($40 / $60) = 66.67%.',
     examples: [
       {
@@ -603,6 +630,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter the Variable Cost per Unit (materials, packaging, shipping, payment fees) to compute Break-Even Units and Break-Even Revenue.'
     ],
     formula: 'Contribution Margin = Selling Price per Unit - Variable Cost per Unit\nBreak-Even Units = Total Fixed Costs / Contribution Margin\nBreak-Even Revenue = Break-Even Units × Selling Price per Unit',
+    formulaExplanation: 'Each unit sold contributes its Contribution Margin toward fixed overhead; once cumulative contribution matches fixed costs, additional sales generate profit.',
     example: 'Fixed rent and salaries are $15,000/month. You sell a gadget for $50, with $20 in variable costs per unit. Contribution margin is $30/unit. Break-even volume is $15,000 / $30 = 500 units ($25,000 in revenue).',
     examples: [
       {
@@ -666,6 +694,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Set the Investment Period in years to also view the annualized compound return (CAGR).'
     ],
     formula: 'Net Return = Final Value - Initial Investment\nROI % = (Net Return / Initial Investment) × 100\nAnnualized ROI % = (((Final Value / Initial Investment) ^ (1 / Years)) - 1) × 100',
+    formulaExplanation: 'Standard ROI measures total percentage gain across the entire holding period, while annualized ROI (CAGR) normalizes performance to an equivalent yearly rate.',
     example: 'You invested $20,000 into a business venture that returned $28,000 after 3 years: Net profit is $8,000. Total ROI is ($8,000 / $20,000) = 40.0%. Annualized return (CAGR) is 11.87% per year.',
     examples: [
       {
@@ -730,6 +759,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Customize Hours per Week (default 40) and Weeks per Year (default 52) to view daily, weekly, bi-weekly, semi-monthly, monthly, and annual gross figures.'
     ],
     formula: 'Annual Salary = Hourly Rate × Hours per Week × Weeks per Year\nHourly Rate = Annual Salary / (Hours per Week × Weeks per Year)\nMonthly Pay = Annual Salary / 12\nBi-Weekly Pay = Annual Salary / 26',
+    formulaExplanation: 'Annual working hours equal Hours per Week multiplied by Weeks per Year (2,080 hours for a standard 40-hour, 52-week full-time year).',
     example: 'At $32.00 per hour working 40 hours a week for 52 weeks: Weekly gross is $1,280.00. Bi-weekly pay is $2,560.00. Monthly average is $5,546.67. Annual salary is $66,560.00.',
     examples: [
       {
@@ -793,6 +823,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Choose your Overtime Multiplier (1.5x time-and-a-half or 2.0x double time) to see regular pay, overtime pay, and gross earnings.'
     ],
     formula: 'Overtime Rate = Regular Hourly Rate × Overtime Multiplier (1.5x)\nRegular Pay = Regular Hours × Regular Hourly Rate\nOvertime Pay = Overtime Hours × Overtime Rate\nGross Pay = Regular Pay + Overtime Pay',
+    formulaExplanation: 'Any hours worked above your regular weekly threshold are compensated at your hourly wage multiplied by the overtime premium (such as 1.5x or 2.0x).',
     example: 'An employee earns $26.00/hour and works 48 hours in a week with time-and-a-half (1.5x) for hours over 40: Regular pay = 40 × $26 = $1,040. Overtime rate = $39/hr. Overtime pay = 8 × $39 = $312. Total pay = $1,352.00.',
     examples: [
       {
@@ -855,6 +886,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Choose Percentage (%) or Dollar Amount ($) for your raise and enter the increase to see your new annual, monthly, bi-weekly, and hourly pay.'
     ],
     formula: 'Raise Amount = Current Salary × (Raise % / 100)\nNew Salary = Current Salary + Raise Amount\nNew Hourly Rate = New Annual Salary / 2,080',
+    formulaExplanation: 'When entering a fixed dollar raise instead of a percentage, the calculator solves Raise % = (Dollar Raise / Current Salary) × 100 automatically.',
     example: 'You earn $65,000 annually and receive a 4.5% annual merit raise: Annual increase is $2,925.00. New annual salary is $67,925.00, yielding an extra $243.75 per month or $112.50 per bi-weekly paycheck.',
     examples: [
       {
@@ -917,6 +949,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Set the Loan Term in years to inspect your monthly payment, total interest paid, and total repayment cost.'
     ],
     formula: 'M = P × [ r(1 + r)^n ] / [ (1 + r)^n - 1 ]\nWhere:\nM = Monthly Payment\nP = Principal Loan Amount\nr = Monthly Interest Rate (APR / 12 / 100)\nn = Total Number of Monthly Payments',
+    formulaExplanation: 'For 0% APR financing, the formula simplifies directly to M = P / n because zero interest accrues across the term.',
     example: 'A $25,000 auto loan at 6.0% APR over a 5-year term (60 months): Monthly payment is $483.32. Total interest paid is $3,999.20. Total repayment is $28,999.20.',
     examples: [
       {
@@ -981,6 +1014,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter the Duration and choose years, months, or days to calculate total simple interest and ending balance.'
     ],
     formula: 'Simple Interest (I) = P × r × t\nTotal Repayment (A) = P + I = P × (1 + r × t)\nWhere P = Principal, r = Annual Rate (decimal), t = Time in Years',
+    formulaExplanation: 'Durations entered in months are converted as t = Months / 12, and durations in days use t = Days / 365.',
     example: 'A loan of $5,000 at 5% simple annual interest for 3 years: Interest earned = $5,000 × 0.05 × 3 = $750. Total repayment amount is $5,750.',
     examples: [
       {
@@ -1043,6 +1077,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter the Annual Interest Rate (%), Time Horizon in years, and select a Compounding Frequency (Monthly, Daily, Quarterly, or Annually).'
     ],
     formula: 'A = P(1 + r/n)^(nt) + PMT × [ ((1 + r/n)^(nt) - 1) / (r/n) ]\nWhere P = Principal, r = Annual rate, n = Compounding frequency per year, t = Years, PMT = Monthly addition',
+    formulaExplanation: 'Higher compounding frequencies (n = 365 for daily vs. n = 1 for annual) credit earned interest sooner so subsequent periods compound on a larger balance.',
     example: '$10,000 principal at 7% annual interest compounded monthly over 10 years without extra deposits: Final balance is $20,096.61 ($10,096.61 in interest earned).',
     examples: [
       {
@@ -1107,6 +1142,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Set the Interest Rate (% APR) and Loan Term to see your exact monthly payment, total interest, and total loan cost.'
     ],
     formula: 'Loan Principal (P) = Purchase Price - Down Payment\nMonthly Payment = [ P × r × (1 + r)^n ] / [ (1 + r)^n - 1 ]\nWhere r = Monthly interest rate (APR / 12), n = Total payment months.',
+    formulaExplanation: 'Total Interest Paid equals (Monthly Payment × n) minus the Financed Principal P after deducting any upfront down payment.',
     example: 'Borrowing $35,000 for a car at 5.5% interest for 48 months: Monthly payment is $813.78. Total repayment is $39,061.44 ($4,061.44 total interest).',
     examples: [
       {
@@ -1170,6 +1206,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter the Term in months or years to uncover the exact effective annual interest rate.'
     ],
     formula: 'For simple interest: r = (Interest / (Principal × Time)) × 100\nFor amortized loans: Solved numerically via the bisection method where f(r) = Monthly Payment - [P × r(1+r)^n] / [(1+r)^n - 1] = 0.',
+    formulaExplanation: 'Iterative numerical bisection tests rate bounds until the calculated monthly payment matches your quoted installment to within a fraction of a cent.',
     example: 'You borrow $10,000 and are quoted 36 monthly payments of $310.00: The implied annual interest rate is 7.27% APR, with $1,160 in total finance charges.',
     examples: [
       {
@@ -1232,6 +1269,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter any Extra Payment per Month to compare your original payoff schedule against the accelerated debt-free timeline and interest savings.'
     ],
     formula: 'Number of Months remaining: n = -ln(1 - (r × P / M)) / ln(1 + r)\nSavings = Original Total Interest - Accelerated Total Interest',
+    formulaExplanation: 'Applying extra monthly dollars increases M directly against remaining principal P, shrinking both remaining months n and cumulative interest.',
     example: 'A $20,000 balance at 7% interest with a regular $300 monthly payment: Adding $100 extra/month ($400 total) cuts repayment from 86 months down to 59 months, saving 27 months and $2,185 in interest.',
     examples: [
       {
@@ -1295,6 +1333,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Set your Expected Annual Return (%) and Time Horizon (Years) to view projected portfolio value, total contributions, and total investment gains.'
     ],
     formula: 'Future Value = P × (1 + r)^t + PMT × [ ((1 + r/12)^(12t) - 1) / (r/12) ]\nWhere P = Initial deposit, r = Annual return rate, PMT = Monthly addition, t = Years',
+    formulaExplanation: 'Total Contributions equal P + (PMT × 12 × t), while Investment Gains equal Future Value minus Total Contributions.',
     example: 'Starting with $5,000 and contributing $400 every month for 20 years at an 8% expected annual return: Total invested is $101,000. Final portfolio value reaches $259,578 ($158,578 in investment gains).',
     examples: [
       {
@@ -1359,6 +1398,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Enter the account Interest Rate / APY (%) and Savings Duration (Years) to inspect total deposits, interest earned, and ending savings balance.'
     ],
     formula: 'Balance = Initial × (1 + r/12)^(12 × Years) + Monthly Deposit × [ ((1 + r/12)^(12 × Years) - 1) / (r/12) ]',
+    formulaExplanation: 'Using monthly compounding (r / 12), each month’s interest accrues on both your cumulative deposits and previously credited interest.',
     example: 'Save $250 every month in a High-Yield Savings Account earning 4.5% APY with $1,000 initial balance: In 5 years, you will have deposited $16,000 and earned $2,075 in interest, reaching $18,075.',
     examples: [
       {
@@ -1422,6 +1462,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Select your Investment Horizon (Years) and Compounding Frequency to compare principal invested vs. compounded investment growth.'
     ],
     formula: 'A = P(1 + r/n)^(nt) + PMT × [ ((1 + r/n)^(nt) - 1) / (r/n) ]\nCompounding frequency n adjusts how frequently returns are capitalized into the principal balance.',
+    formulaExplanation: 'When compounding frequency differs from monthly deposit frequency, periodic contributions are converted into the equivalent compounding rate.',
     example: 'An initial $15,000 investment with $300 monthly addition at 9% return compounded quarterly over 15 years yields $224,960. Your deposits were $69,000, while compound growth generated $155,960.',
     examples: [
       {
@@ -1484,6 +1525,7 @@ export const CALCULATORS: CalculatorMeta[] = [
       'Add any Interim Cash Flow (such as dividends, interest, or net rental income received) to calculate Net Return, ROI %, and Capital Multiple.'
     ],
     formula: 'Total Return = Final Value + Interim Cash Flow - Initial Investment\nROI % = (Total Return / Initial Investment) × 100\nCapital Multiple = (Final Value + Interim Cash Flow) / Initial Investment',
+    formulaExplanation: 'Including dividends, interest, or rental payouts inside Interim Cash Flow captures total economic return rather than price appreciation alone.',
     example: 'You buy an asset for $50,000, receive $6,000 in dividends over the holding period, and sell it for $68,000: Total return = $68,000 + $6,000 - $50,000 = $24,000. ROI = 48.0% (1.48x multiple).',
     examples: [
       {
