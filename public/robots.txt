@@ -7,4 +7,4 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 
-Sitemap: https://moneycalchub.online/sitemap.xml
+Sitemap: https://www.moneycalchub.online/sitemap.xml

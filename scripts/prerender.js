@@ -6,7 +6,7 @@ import { CALCULATORS, CATEGORIES, HOMEPAGE_FAQS } from '../src/data/calculators.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const BASE_URL = 'https://moneycalchub.online';
+const BASE_URL = 'https://www.moneycalchub.online';
 const TODAY_ISO = new Date().toISOString().slice(0, 10);
 
 function escapeHtml(str) {
@@ -872,6 +872,12 @@ function main() {
         '@type': 'SearchAction',
         target: `${homeCanonicalUrl}?q={search_term_string}`,
         'query-input': 'required name=search_term_string'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'MoneyCalc Hub',
+        url: homeCanonicalUrl,
+        logo: `${homeCanonicalUrl}favicon-192x192.png`
       }
     },
     {

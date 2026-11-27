@@ -59,17 +59,21 @@ export function SEOHead({
     setMeta('property', 'og:type', resolvedPageType === 'calculator' ? 'article' : 'website');
 
     // Canonical production origin
-    const origin = 'https://moneycalchub.online';
+    const origin = 'https://www.moneycalchub.online';
     const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
     const normalizedPath = cleanPath === '/' ? '/' : cleanPath;
     const fullCanonicalUrl = `${origin}${normalizedPath}`;
+    const brandLogoUrl = `${origin}/favicon-192x192.png`;
     setMeta('property', 'og:url', fullCanonicalUrl);
     setMeta('property', 'og:site_name', 'MoneyCalc Hub');
+    setMeta('property', 'og:image', brandLogoUrl);
+    setMeta('property', 'og:image:alt', 'MoneyCalc Hub Logo');
 
     // Twitter Card
     setMeta('name', 'twitter:card', 'summary_large_image');
     setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', description);
+    setMeta('name', 'twitter:image', brandLogoUrl);
 
     // Canonical link tag
     let link = document.querySelector('link[rel="canonical"]');
@@ -99,13 +103,19 @@ export function SEOHead({
             target: `${fullCanonicalUrl}?q={search_term_string}`,
             'query-input': 'required name=search_term_string',
           },
+          publisher: {
+            '@type': 'Organization',
+            name: 'MoneyCalc Hub',
+            url: fullCanonicalUrl,
+            logo: brandLogoUrl,
+          },
         },
         {
           '@context': 'https://schema.org',
           '@type': 'Organization',
           name: 'MoneyCalc Hub',
           url: fullCanonicalUrl,
-          logo: `${origin}/favicon-192x192.png`,
+          logo: brandLogoUrl,
         },
         {
           '@context': 'https://schema.org',
